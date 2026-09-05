@@ -34,6 +34,19 @@ export function App() {
       <section className="pg-grid">
         <Card>
           <CardHeader>
+            <CardTitle>Get started</CardTitle>
+            <CardDescription>Everything on this page is themed by the dock. Add it to your app:</CardDescription>
+          </CardHeader>
+          <CardContent className="pg-stack">
+            <pre className="pg-code">{`npx notsho init
+npx notsho add button card input
+claude mcp add notsho -- npx -y @notsho/mcp`}</pre>
+            <p className="pg-muted">Then wrap your app in <code>ThemeProvider</code> and drop in <code>CustomizerDock</code>. Your agent reads <code>AGENTS.md</code>; your users get this panel.</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>Buttons</CardTitle>
             <CardDescription>Four variants, three sizes, loading and disabled.</CardDescription>
           </CardHeader>
