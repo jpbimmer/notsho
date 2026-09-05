@@ -1,0 +1,38 @@
+{
+  "$schema": "./registry.schema.json",
+  "version": 1,
+  "shared": {
+    "files": ["lib/cx.ts"],
+    "dependencies": ["clsx"]
+  },
+  "components": {
+    "button": {
+      "description": "Button with primary/secondary/ghost/danger variants, three sizes, loading and icon-only states.",
+      "files": ["components/button/index.ts", "components/button/button.tsx", "components/button/button.module.css"],
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [],
+      "tokens": ["button.*", "color.accent*", "color.on-accent", "color.danger*", "color.surface-*", "color.border-strong", "color.focus-ring", "size.control*", "space.control-gap", "motion.*"]
+    },
+    "card": {
+      "description": "Raised surface with header/title/description/content/footer parts. Supports flush and interactive.",
+      "files": ["components/card/index.ts", "components/card/card.tsx", "components/card/card.module.css"],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": ["card.*", "shadow.floating", "color.border-strong", "font.heading", "text.heading-*", "space.stack", "space.1"]
+    },
+    "input": {
+      "description": "Text input with three sizes and invalid/disabled states. Pairs with Field.",
+      "files": ["components/input/index.ts", "components/input/input.tsx", "components/input/input.module.css"],
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [],
+      "tokens": ["input.*", "color.text*", "color.focus-ring", "color.danger", "color.surface-sunken", "size.control*", "border.*", "motion.*"]
+    },
+    "field": {
+      "description": "Label, description, and error wrapper that wires aria for any control.",
+      "files": ["components/field/index.ts", "components/field/field.tsx", "components/field/field.module.css"],
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["input"],
+      "tokens": ["space.1-5", "color.text*", "color.danger", "text.label-weight", "size.sm", "size.xs"]
+    }
+  }
+}

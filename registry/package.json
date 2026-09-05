@@ -1,0 +1,21 @@
+{
+  "name": "@notsho/registry",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Copy-in component source. Not published; the CLI copies from here. Consumed directly by workspace apps in dev.",
+  "type": "module",
+  "exports": {
+    "./*": "./components/*/index.ts",
+    "./lib/*": "./lib/*.ts",
+    "./registry.json": "./registry.json"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "clsx": "^2.1.1"
+  },
+  "peerDependencies": { "react": "^19.0.0" },
+  "devDependencies": { "@types/react": "^19.0.0", "react": "^19.0.0", "typescript": "^5.7.0" }
+}

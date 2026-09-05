@@ -1,0 +1,68 @@
+.button {
+  --_h: var(--notsho-button-height);
+  --_px: var(--notsho-button-padding-x);
+  --_fs: var(--notsho-size-sm);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--notsho-space-control-gap);
+  height: var(--_h);
+  padding: 0 var(--_px);
+  border: var(--notsho-border-width) solid transparent;
+  border-radius: var(--notsho-button-radius);
+  font-family: var(--notsho-font-body);
+  font-size: var(--_fs);
+  font-weight: var(--notsho-button-weight);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard),
+    border-color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard),
+    color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard),
+    opacity var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
+}
+
+.button:focus-visible {
+  outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.button[data-size="sm"] { --_h: var(--notsho-size-control-sm); --_px: var(--notsho-space-2-5); --_fs: var(--notsho-size-xs); }
+.button[data-size="lg"] { --_h: var(--notsho-size-control-lg); --_px: var(--notsho-space-5); --_fs: var(--notsho-size-md); }
+.button[data-icon-only] { width: var(--_h); padding: 0; }
+
+/* Variants */
+.button[data-variant="primary"] {
+  background: var(--notsho-color-accent);
+  color: var(--notsho-color-on-accent);
+}
+.button[data-variant="primary"]:hover { background: var(--notsho-color-accent-hover); }
+.button[data-variant="primary"]:active { background: var(--notsho-color-accent-active); }
+
+.button[data-variant="secondary"] {
+  background: var(--notsho-color-surface-raised);
+  color: var(--notsho-color-text);
+  border-color: var(--notsho-color-border-strong);
+}
+.button[data-variant="secondary"]:hover { background: var(--notsho-color-surface-hover); }
+.button[data-variant="secondary"]:active { background: var(--notsho-color-surface-active); }
+
+.button[data-variant="ghost"] {
+  background: transparent;
+  color: var(--notsho-color-text);
+}
+.button[data-variant="ghost"]:hover { background: var(--notsho-color-surface-hover); }
+.button[data-variant="ghost"]:active { background: var(--notsho-color-surface-active); }
+
+.button[data-variant="danger"] {
+  background: var(--notsho-color-danger);
+  color: var(--notsho-color-on-danger);
+}
+.button[data-variant="danger"]:hover { background: var(--notsho-color-danger-hover); }
+
+/* States */
+.button[data-disabled] { cursor: not-allowed; opacity: 0.5; }
+.button[data-loading] { cursor: progress; }

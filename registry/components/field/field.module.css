@@ -1,0 +1,22 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--notsho-space-1-5);
+}
+.label {
+  color: var(--notsho-color-text);
+  font-size: var(--notsho-size-sm);
+  font-weight: var(--notsho-text-label-weight);
+  line-height: var(--notsho-text-body-leading);
+}
+.label[data-disabled] { opacity: 0.5; }
+.description {
+  margin: 0;
+  color: var(--notsho-color-text-muted);
+  font-size: var(--notsho-size-xs);
+}
+.error {
+  margin: 0;
+  color: var(--notsho-color-danger);
+  font-size: var(--notsho-size-xs);
+}
