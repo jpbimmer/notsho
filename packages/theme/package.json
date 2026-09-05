@@ -1,0 +1,34 @@
+{
+  "name": "@notsho/theme",
+  "version": "0.0.1",
+  "description": "Notsho theme runtime: apply, persist, and hydrate token overrides. Framework-agnostic core with React bindings.",
+  "license": "MIT",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/react.d.ts", "import": "./dist/react.js" },
+    "./core": { "types": "./dist/core.d.ts", "import": "./dist/core.js" },
+    "./script": { "types": "./dist/script.d.ts", "import": "./dist/script.js" }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "tsx --test src/*.test.ts",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "dependencies": {
+    "@notsho/tokens": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

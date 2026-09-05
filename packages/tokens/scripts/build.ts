@@ -221,6 +221,13 @@ ${m.tokens.map(line).join("\n")}
 
 export type TokenName = keyof typeof tokens;
 
+export type Tier = "primitive" | "semantic" | "component";
+
+/** Token name → tier. Primitives are derived and never overridden at runtime. */
+export const tokenTier: Record<TokenName, Tier> = {
+${m.tokens.map((t) => `  ${JSON.stringify(t.name)}: ${JSON.stringify(t.tier)},`).join("\n")}
+};
+
 export type PrimitiveTokenName =
 ${union("primitive")};
 

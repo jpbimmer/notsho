@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  font: var(--notsho-text-body-size) / var(--notsho-text-body-leading) var(--notsho-font-body);
+  background: var(--notsho-color-surface);
+  color: var(--notsho-color-text);
+}
+.pg { padding: var(--notsho-space-section); max-width: 60rem; margin: 0 auto; }
+.pg h1 {
+  font: var(--notsho-text-heading-weight) var(--notsho-size-3xl) / var(--notsho-text-heading-leading) var(--notsho-font-heading);
+  letter-spacing: var(--notsho-text-heading-tracking); margin: 0 0 var(--notsho-space-stack);
+}
+.pg-toolbar { display: flex; gap: var(--notsho-space-stack); align-items: center; flex-wrap: wrap; margin: var(--notsho-space-section) 0; }
+.pg-toolbar label { display: flex; gap: 6px; align-items: center; color: var(--notsho-color-text-muted); font-size: var(--notsho-size-sm); }
+.pg-card {
+  background: var(--notsho-card-background); border: var(--notsho-border-width) solid var(--notsho-card-border);
+  border-radius: var(--notsho-card-radius); padding: var(--notsho-card-padding); box-shadow: var(--notsho-card-shadow);
+}
+.pg-btn {
+  height: var(--notsho-button-height); padding: 0 var(--notsho-button-padding-x); border-radius: var(--notsho-button-radius);
+  font: var(--notsho-button-weight) var(--notsho-size-sm) var(--notsho-font-body); border: 0; cursor: pointer;
+  background: var(--notsho-color-accent); color: var(--notsho-color-on-accent);
+  transition: background var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
+}
+.pg-btn:hover { background: var(--notsho-color-accent-hover); }
