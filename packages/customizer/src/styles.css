@@ -281,7 +281,7 @@
 .nc-code {
   box-sizing: border-box; width: 100%; min-height: 8rem; resize: vertical;
   padding: var(--notsho-space-2-5); border: var(--notsho-border-width) solid var(--notsho-color-border);
-  border-radius: var(--notsho-radius-control); background: var(--notsho-color-surface-sunken); color: var(--notsho-color-text);
+  border-radius: min(var(--notsho-radius-card), 0.75rem); background: var(--notsho-color-surface-sunken); color: var(--notsho-color-text);
   font-family: var(--notsho-font-code); font-size: var(--notsho-size-xs); line-height: var(--notsho-leading-normal);
 }
 .nc-code:focus-visible { outline: none; border-color: var(--notsho-color-focus-ring); }
