@@ -1,0 +1,29 @@
+{
+  "name": "@notsho/customizer",
+  "version": "0.0.1",
+  "description": "Drop-in, end-user theme customization UI for Notsho. Pick colors, get a coherent theme; persists through @notsho/theme.",
+  "license": "MIT",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && cp src/styles.css dist/styles.css",
+    "test": "tsx --test src/*.test.ts",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "dependencies": {
+    "@notsho/theme": "workspace:*",
+    "@notsho/tokens": "workspace:*"
+  },
+  "peerDependencies": { "react": "^19.0.0" },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -13,7 +13,8 @@
     "@notsho/tokens": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@notsho/registry": "workspace:*"
+    "@notsho/registry": "workspace:*",
+    "@notsho/customizer": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",

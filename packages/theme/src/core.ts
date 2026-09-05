@@ -13,6 +13,8 @@ export interface Theme {
   /** "system" follows prefers-color-scheme. */
   scheme: ColorScheme;
   overrides: ThemeOverrides;
+  /** Free-form, JSON-safe state for tools that write overrides (e.g. the customizer's choices). */
+  meta?: Record<string, unknown>;
 }
 
 export const THEME_FORMAT_VERSION = 1;
@@ -31,10 +33,11 @@ export const isThemable = (name: string): name is ThemableTokenName =>
 
 // ─── Serialization ───────────────────────────────────────────────────────────
 
-interface Stored { v: number; scheme: ColorScheme; overrides: Record<string, unknown> }
+interface Stored { v: number; scheme: ColorScheme; overrides: Record<string, unknown>; meta?: Record<string, unknown> }
 
 export function serializeTheme(theme: Theme): string {
   const s: Stored = { v: THEME_FORMAT_VERSION, scheme: theme.scheme, overrides: theme.overrides };
+  if (theme.meta && Object.keys(theme.meta).length) s.meta = theme.meta;
   return JSON.stringify(s);
 }
 
@@ -63,7 +66,8 @@ export function parseTheme(input: string | null | undefined): Theme {
       }
     }
   }
-  return { scheme, overrides };
+  const meta = s.meta && typeof s.meta === "object" && !Array.isArray(s.meta) ? (s.meta as Record<string, unknown>) : undefined;
+  return meta ? { scheme, overrides, meta } : { scheme, overrides };
 }
 
 /** Values land inside a <style> element: strip anything that could close a declaration or block. */

@@ -18,6 +18,10 @@ test("serialize/parse round-trips and drops junk", () => {
   assert.equal(junk.scheme, "system");
   assert.deepEqual(junk.overrides, { "color.text": "abc" });
 
+  const withMeta = parseTheme(serializeTheme({ scheme: "light", overrides: {}, meta: { colors: { accent: "#fff" } } }));
+  assert.deepEqual(withMeta.meta, { colors: { accent: "#fff" } });
+  assert.equal(parseTheme(JSON.stringify({ v: 1, scheme: "light", overrides: {}, meta: [1] })).meta, undefined);
+
   assert.deepEqual(parseTheme("not json"), emptyTheme());
   assert.deepEqual(parseTheme(null), emptyTheme());
 });

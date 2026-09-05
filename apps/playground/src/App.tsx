@@ -1,12 +1,12 @@
 import { useTheme } from "@notsho/theme";
+import { Customizer } from "@notsho/customizer";
 import { Button } from "@notsho/registry/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@notsho/registry/card";
 import { Input } from "@notsho/registry/input";
 import { Field, FieldLabel, FieldDescription, FieldError } from "@notsho/registry/field";
 
 export function App() {
-  const { theme, resolvedScheme, setScheme, setOverride, reset, hydrated } = useTheme();
-  const accent = typeof theme.overrides["color.accent"] === "string" ? theme.overrides["color.accent"] : "";
+  const { theme, resolvedScheme, hydrated } = useTheme();
   return (
     <main className="pg">
       <h1>Notsho playground</h1>
@@ -14,19 +14,11 @@ export function App() {
         scheme={theme.scheme} resolved={resolvedScheme} hydrated={String(hydrated)} overrides={Object.keys(theme.overrides).length}
       </p>
 
-      <div className="pg-toolbar">
-        <label>Scheme
-          <select value={theme.scheme} onChange={(e) => setScheme(e.target.value as never)} data-testid="scheme">
-            <option value="system">system</option><option value="light">light</option><option value="dark">dark</option>
-          </select>
-        </label>
-        <label>Accent
-          <input data-testid="accent" placeholder="oklch(0.62 0.22 300)" value={accent}
-            onChange={(e) => setOverride("color.accent", e.target.value || undefined)} />
-        </label>
-        <Button size="sm" variant="secondary" onClick={() => setOverride("radius.control", "9999px")}>Pill controls</Button>
-        <Button size="sm" variant="ghost" onClick={() => reset()}>Reset</Button>
-      </div>
+      <Card style={{ marginBottom: "var(--notsho-space-section)" }}>
+        <CardContent>
+          <Customizer />
+        </CardContent>
+      </Card>
 
       <section className="pg-grid">
         <Card>
