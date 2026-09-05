@@ -2,37 +2,294 @@
   "$schema": "./registry.schema.json",
   "version": 1,
   "shared": {
-    "files": ["lib/cx.ts"],
-    "dependencies": ["clsx"]
+    "files": [
+      "lib/cx.ts",
+      "lib/icons.tsx"
+    ],
+    "dependencies": [
+      "clsx"
+    ]
   },
   "components": {
     "button": {
       "description": "Button with primary/secondary/ghost/danger variants, three sizes, loading and icon-only states.",
-      "files": ["components/button/index.ts", "components/button/button.tsx", "components/button/button.module.css"],
-      "dependencies": ["@base-ui/react"],
+      "files": [
+        "components/button/index.ts",
+        "components/button/button.tsx",
+        "components/button/button.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
       "registryDependencies": [],
-      "tokens": ["button.*", "color.accent*", "color.on-accent", "color.danger*", "color.surface-*", "color.border-strong", "color.focus-ring", "size.control*", "space.control-gap", "motion.*"]
+      "tokens": [
+        "button.*",
+        "color.accent*",
+        "color.on-accent",
+        "color.danger*",
+        "color.surface-*",
+        "color.border-strong",
+        "color.focus-ring",
+        "size.control*",
+        "space.control-gap",
+        "motion.*"
+      ]
     },
     "card": {
       "description": "Raised surface with header/title/description/content/footer parts. Supports flush and interactive.",
-      "files": ["components/card/index.ts", "components/card/card.tsx", "components/card/card.module.css"],
+      "files": [
+        "components/card/index.ts",
+        "components/card/card.tsx",
+        "components/card/card.module.css"
+      ],
       "dependencies": [],
       "registryDependencies": [],
-      "tokens": ["card.*", "shadow.floating", "color.border-strong", "font.heading", "text.heading-*", "space.stack", "space.1"]
+      "tokens": [
+        "card.*",
+        "shadow.floating",
+        "color.border-strong",
+        "font.heading",
+        "text.heading-*",
+        "space.stack",
+        "space.1"
+      ]
     },
     "input": {
       "description": "Text input with three sizes and invalid/disabled states. Pairs with Field.",
-      "files": ["components/input/index.ts", "components/input/input.tsx", "components/input/input.module.css"],
-      "dependencies": ["@base-ui/react"],
+      "files": [
+        "components/input/index.ts",
+        "components/input/input.tsx",
+        "components/input/input.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
       "registryDependencies": [],
-      "tokens": ["input.*", "color.text*", "color.focus-ring", "color.danger", "color.surface-sunken", "size.control*", "border.*", "motion.*"]
+      "tokens": [
+        "input.*",
+        "color.text*",
+        "color.focus-ring",
+        "color.danger",
+        "color.surface-sunken",
+        "size.control*",
+        "border.*",
+        "motion.*"
+      ]
     },
     "field": {
       "description": "Label, description, and error wrapper that wires aria for any control.",
-      "files": ["components/field/index.ts", "components/field/field.tsx", "components/field/field.module.css"],
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["input"],
-      "tokens": ["space.1-5", "color.text*", "color.danger", "text.label-weight", "size.sm", "size.xs"]
+      "files": [
+        "components/field/index.ts",
+        "components/field/field.tsx",
+        "components/field/field.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "input"
+      ],
+      "tokens": [
+        "space.1-5",
+        "color.text*",
+        "color.danger",
+        "text.label-weight",
+        "size.sm",
+        "size.xs"
+      ]
+    },
+    "badge": {
+      "description": "Status label with neutral/accent/success/warning/danger variants and optional dot.",
+      "files": [
+        "components/badge/index.ts",
+        "components/badge/badge.tsx",
+        "components/badge/badge.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "badge.*",
+        "color.*-subtle",
+        "color.accent*",
+        "color.success",
+        "color.warning",
+        "color.danger",
+        "color.surface-hover",
+        "color.border",
+        "size.xs"
+      ]
+    },
+    "checkbox": {
+      "description": "Checkbox with optional label and description; supports indeterminate.",
+      "files": [
+        "components/checkbox/index.ts",
+        "components/checkbox/checkbox.tsx",
+        "components/checkbox/checkbox.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "radius.control",
+        "color.accent",
+        "color.on-accent",
+        "color.border-strong",
+        "input.background",
+        "color.focus-ring",
+        "text.label-weight"
+      ]
+    },
+    "switch": {
+      "description": "On/off toggle for settings that apply immediately.",
+      "files": [
+        "components/switch/index.ts",
+        "components/switch/switch.tsx",
+        "components/switch/switch.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "radius.pill",
+        "color.accent*",
+        "color.border-strong",
+        "color.white",
+        "shadow.sm",
+        "motion.duration-normal"
+      ]
+    },
+    "select": {
+      "description": "Single-value select with grouped items, separators, and a sliding popup.",
+      "files": [
+        "components/select/index.ts",
+        "components/select/select.tsx",
+        "components/select/select.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "input.*",
+        "color.surface-overlay",
+        "color.surface-hover",
+        "color.border",
+        "radius.control",
+        "shadow.floating",
+        "color.accent",
+        "color.focus-ring",
+        "size.control*"
+      ]
+    },
+    "dialog": {
+      "description": "Modal dialog with backdrop, centered popup, header/footer parts, and a corner close.",
+      "files": [
+        "components/dialog/index.ts",
+        "components/dialog/dialog.tsx",
+        "components/dialog/dialog.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "tokens": [
+        "dialog.*",
+        "color.scrim",
+        "color.border",
+        "font.heading",
+        "text.heading-*",
+        "motion.duration-slow",
+        "motion.easing-*"
+      ]
+    },
+    "tabs": {
+      "description": "Tabs with underline or segmented variants and a sliding indicator.",
+      "files": [
+        "components/tabs/index.ts",
+        "components/tabs/tabs.tsx",
+        "components/tabs/tabs.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "radius.control",
+        "color.border",
+        "color.accent",
+        "color.surface-sunken",
+        "color.surface-raised",
+        "color.surface-hover",
+        "shadow.raised",
+        "size.control",
+        "motion.duration-normal"
+      ]
+    },
+    "tooltip": {
+      "description": "Hover/focus hint with arrow. Wrap regions in TooltipProvider.",
+      "files": [
+        "components/tooltip/index.ts",
+        "components/tooltip/tooltip.tsx",
+        "components/tooltip/tooltip.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "tooltip.*",
+        "size.xs",
+        "leading.snug",
+        "motion.duration-fast"
+      ]
+    },
+    "menu": {
+      "description": "Dropdown menu with items, danger items, separators, and groups.",
+      "files": [
+        "components/menu/index.ts",
+        "components/menu/menu.tsx",
+        "components/menu/menu.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "tokens": [
+        "color.surface-overlay",
+        "color.surface-hover",
+        "color.border",
+        "color.danger*",
+        "radius.control",
+        "shadow.floating"
+      ]
+    },
+    "toast": {
+      "description": "Stacked, swipeable notifications. Mount <Toaster> once; call useToast().add().",
+      "files": [
+        "components/toast/index.ts",
+        "components/toast/toast.tsx",
+        "components/toast/toast.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "color.surface-overlay",
+        "color.border",
+        "color.accent",
+        "color.success",
+        "color.warning",
+        "color.danger",
+        "radius.card",
+        "shadow.floating"
+      ]
     }
   }
 }
