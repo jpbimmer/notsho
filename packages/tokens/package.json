@@ -1,0 +1,26 @@
+{
+  "name": "@notsho/tokens",
+  "version": "0.0.1",
+  "description": "Notsho design tokens: the single source of truth, compiled to CSS variables, TypeScript types, and a machine-readable manifest.",
+  "license": "MIT",
+  "type": "module",
+  "files": ["dist", "src/tokens.json"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./tokens.css": "./dist/tokens.css",
+    "./manifest.json": "./dist/manifest.json",
+    "./tokens.json": "./src/tokens.json"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts && tsc -p tsconfig.build.json",
+    "dev": "tsx watch scripts/build.ts",
+    "test": "tsx --test scripts/*.test.ts",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
