@@ -11,8 +11,12 @@ const DEFAULT_CHOICES: ColorChoices = { accent: "#2563eb", tint: 0 };
 export interface CustomizerProps {
   /** Hide the live preview column (e.g. when embedding beside your own UI). */
   preview?: boolean;
-  /** Section heading. Defaults to "Appearance". */
-  title?: string;
+  /** Section heading. Defaults to "Appearance". Pass null to omit the header. */
+  title?: string | null;
+  /** "column" stacks sections (default); "row" lays them side by side for a horizontal dock. */
+  layout?: "column" | "row";
+  /** Extra controls rendered in the header, right of the title. */
+  headerActions?: React.ReactNode;
   className?: string;
 }
 
@@ -20,7 +24,7 @@ export interface CustomizerProps {
  * End-user theme customizer. Drop into a settings page inside <ThemeProvider>.
  * v0: color scheme, presets, accent, surface tint. Import "@notsho/customizer/styles.css" once.
  */
-export function Customizer({ preview = true, title = "Appearance", className }: CustomizerProps) {
+export function Customizer({ preview = true, title = "Appearance", layout = "column", headerActions, className }: CustomizerProps) {
   const { theme, setTheme, setScheme } = useTheme();
 
   const choices = useMemo<ColorChoices>(() => {
@@ -53,13 +57,19 @@ export function Customizer({ preview = true, title = "Appearance", className }: 
   const activePreset = presets.find((p) => p.accent.toLowerCase() === choices.accent.toLowerCase() && p.tint === choices.tint)?.id;
 
   return (
-    <div className={`nc${className ? ` ${className}` : ""}`} data-notsho-customizer>
+    <div className={`nc${className ? ` ${className}` : ""}`} data-notsho-customizer data-layout={layout} data-preview={preview || undefined}>
       <div className="nc-controls">
-        <header className="nc-head">
-          <h2 className="nc-title">{title}</h2>
-          <button type="button" className="nc-link" onClick={resetColors} disabled={isDefault}>Reset</button>
-        </header>
+        {title !== null && (
+          <header className="nc-head">
+            <h2 className="nc-title">{title}</h2>
+            <div className="nc-head-actions">
+              <button type="button" className="nc-link" onClick={resetColors} disabled={isDefault}>Reset</button>
+              {headerActions}
+            </div>
+          </header>
+        )}
 
+        <div className="nc-sections">
         <section className="nc-section">
           <div className="nc-label">Mode</div>
           <div className="nc-seg" role="radiogroup" aria-label="Color scheme">
@@ -105,6 +115,7 @@ export function Customizer({ preview = true, title = "Appearance", className }: 
             onChange={(e) => apply({ ...choices, tint: Number(e.target.value) / 100 })}
             style={{ "--nc-fill": `${Math.round(choices.tint * 100)}%` } as React.CSSProperties} />
         </section>
+        </div>
       </div>
 
       {preview && <Preview />}

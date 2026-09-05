@@ -1,5 +1,5 @@
 import { useTheme } from "@notsho/theme";
-import { Customizer } from "@notsho/customizer";
+import { CustomizerDock } from "@notsho/customizer";
 import { Button } from "@notsho/registry/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@notsho/registry/card";
 import { Input } from "@notsho/registry/input";
@@ -20,17 +20,14 @@ export function App() {
   const { theme, resolvedScheme, hydrated } = useTheme();
   const toast = useToast();
   return (
-    <main className="pg">
-      <h1>Notsho playground</h1>
-      <p data-testid="status" style={{ color: "var(--notsho-color-text-muted)" }}>
-        scheme={theme.scheme} resolved={resolvedScheme} hydrated={String(hydrated)} overrides={Object.keys(theme.overrides).length}
-      </p>
-
-      <Card style={{ marginBottom: "var(--notsho-space-section)" }}>
-        <CardContent>
-          <Customizer />
-        </CardContent>
-      </Card>
+    <div className="frame">
+      <header className="frame-bar">
+        <span className="frame-brand">Notsho</span>
+        <span className="frame-status" data-testid="status">
+          {theme.scheme} · {resolvedScheme} · {Object.keys(theme.overrides).length} overrides{hydrated ? "" : " · hydrating"}
+        </span>
+      </header>
+      <main className="stage">
 
       <section className="pg-grid">
         <Card>
@@ -190,6 +187,8 @@ export function App() {
           </CardContent>
         </Card>
       </section>
-    </main>
+      </main>
+      <CustomizerDock defaultOpen />
+    </div>
   );
 }

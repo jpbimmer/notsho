@@ -4,13 +4,20 @@ body {
   background: var(--notsho-color-surface);
   color: var(--notsho-color-text);
 }
-.pg { padding: var(--notsho-space-section); max-width: 60rem; margin: 0 auto; }
-.pg h1 {
-  font: var(--notsho-text-heading-weight) var(--notsho-size-3xl) / var(--notsho-text-heading-leading) var(--notsho-font-heading);
-  letter-spacing: var(--notsho-text-heading-tracking); margin: 0 0 var(--notsho-space-stack);
+html, body, #root { height: 100%; }
+body { overflow: hidden; }
+
+/* Non-scrolling frame: header bar + internally scrolling stage. The dock is position: fixed. */
+.frame { display: grid; grid-template-rows: auto 1fr; height: 100dvh; }
+.frame-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 3rem; padding: 0 var(--notsho-space-6);
+  border-bottom: var(--notsho-border-width) solid var(--notsho-color-border);
+  background: var(--notsho-color-surface-raised);
 }
-.pg-toolbar { display: flex; gap: var(--notsho-space-stack); align-items: center; flex-wrap: wrap; margin: var(--notsho-space-section) 0; }
-.pg-toolbar label { display: flex; gap: 6px; align-items: center; color: var(--notsho-color-text-muted); font-size: var(--notsho-size-sm); }
+.frame-brand { font-family: var(--notsho-font-heading); font-weight: var(--notsho-text-heading-weight); letter-spacing: var(--notsho-text-heading-tracking); }
+.frame-status { color: var(--notsho-color-text-subtle); font-size: var(--notsho-size-xs); font-variant-numeric: tabular-nums; }
+.stage { overflow: auto; padding: var(--notsho-space-section); padding-bottom: 14rem; }
 .pg-card {
   background: var(--notsho-card-background); border: var(--notsho-border-width) solid var(--notsho-card-border);
   border-radius: var(--notsho-card-radius); padding: var(--notsho-card-padding); box-shadow: var(--notsho-card-shadow);
