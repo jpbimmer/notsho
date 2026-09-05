@@ -161,8 +161,8 @@
 
 .ncd[data-position="bottom"] { left: 0; right: 0; bottom: 0; justify-content: center; align-items: flex-end; padding: 0 var(--notsho-space-4) var(--notsho-space-4); }
 .ncd[data-position="top"]    { left: 0; right: 0; top: 0;    justify-content: center; align-items: flex-start; padding: var(--notsho-space-4) var(--notsho-space-4) 0; }
-.ncd[data-position="left"]   { top: 0; bottom: 0; left: 0;   align-items: center; justify-content: flex-start; padding: var(--notsho-space-4) 0 var(--notsho-space-4) var(--notsho-space-4); }
-.ncd[data-position="right"]  { top: 0; bottom: 0; right: 0;  align-items: center; justify-content: flex-end; padding: var(--notsho-space-4) var(--notsho-space-4) var(--notsho-space-4) 0; }
+.ncd[data-position="left"]   { top: 0; bottom: 0; left: 0;   align-items: stretch; justify-content: flex-start; }
+.ncd[data-position="right"]  { top: 0; bottom: 0; right: 0;  align-items: stretch; justify-content: flex-end; }
 
 .ncd-panel {
   box-sizing: border-box;
@@ -176,7 +176,19 @@
   animation: ncd-in var(--notsho-motion-duration-normal) var(--notsho-motion-easing-enter);
 }
 .ncd[data-position="top"] .ncd-panel, .ncd[data-position="bottom"] .ncd-panel { max-width: 76rem; }
-.ncd[data-position="left"] .ncd-panel, .ncd[data-position="right"] .ncd-panel { width: 21rem; }
+.ncd[data-position="left"] .ncd-panel, .ncd[data-position="right"] .ncd-panel {
+  width: 22rem; height: 100%; border-radius: 0; box-shadow: none;
+  border-width: 0; padding-top: var(--notsho-space-5);
+  background: var(--notsho-color-surface-raised);
+}
+.ncd[data-position="left"] .ncd-panel { border-right: var(--notsho-border-width) solid var(--notsho-color-border); animation-name: ncd-in-left; }
+.ncd[data-position="right"] .ncd-panel { border-left: var(--notsho-border-width) solid var(--notsho-color-border); animation-name: ncd-in-right; }
+@keyframes ncd-in-left { from { opacity: 0; transform: translateX(-0.5rem); } to { opacity: 1; transform: none; } }
+@keyframes ncd-in-right { from { opacity: 0; transform: translateX(0.5rem); } to { opacity: 1; transform: none; } }
+/* Collapsed side handle hugs the edge, vertically centered. */
+.ncd[data-position="left"]:not([data-open]), .ncd[data-position="right"]:not([data-open]) { align-items: center; }
+.ncd[data-position="left"]:not([data-open]) { padding-left: var(--notsho-space-4); }
+.ncd[data-position="right"]:not([data-open]) { padding-right: var(--notsho-space-4); }
 .ncd[data-position="left"] .ncd-panel .nc, .ncd[data-position="right"] .ncd-panel .nc { grid-template-columns: 1fr; }
 @keyframes ncd-in { from { opacity: 0; transform: translateY(0.5rem); } to { opacity: 1; transform: none; } }
 .ncd[data-position="top"] .ncd-panel { animation-name: ncd-in-top; }
@@ -209,15 +221,31 @@
 }
 .ncd-icon:hover { background: var(--notsho-color-surface-hover); color: var(--notsho-color-text); }
 .ncd-icon:focus-visible { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); }
-.ncd-pos { display: inline-flex; gap: 2px; padding: 2px; background: var(--notsho-color-surface-sunken); border: var(--notsho-border-width) solid var(--notsho-color-border); border-radius: var(--notsho-radius-control); }
-.ncd-pos-item { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border: 0; border-radius: calc(var(--notsho-radius-control) - 2px); background: transparent; color: var(--notsho-color-text-muted); cursor: pointer; }
-.ncd-pos-item:hover { color: var(--notsho-color-text); }
-.ncd-pos-item[data-active] { background: var(--notsho-color-surface-raised); color: var(--notsho-color-accent); box-shadow: var(--notsho-shadow-raised); }
-.ncd-pos-item:focus-visible { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); outline-offset: -2px; }
+.ncd-icon[data-active] { background: var(--notsho-color-accent-subtle); color: var(--notsho-color-accent); }
+.ncd-pos { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--notsho-space-2); }
+.ncd-pos-item {
+  display: flex; flex-direction: column; align-items: center; gap: var(--notsho-space-1-5);
+  padding: var(--notsho-space-2-5) var(--notsho-space-1);
+  background: var(--notsho-color-surface-raised);
+  border: var(--notsho-border-width) solid var(--notsho-color-border);
+  border-radius: var(--notsho-radius-control);
+  color: var(--notsho-color-text-muted); font: inherit; font-size: var(--notsho-size-xs); cursor: pointer;
+  transition: border-color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard), background var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
+}
+.ncd-pos-item svg { width: 20px; height: 20px; }
+.ncd-pos-item:hover { border-color: var(--notsho-color-border-strong); background: var(--notsho-color-surface-hover); }
+.ncd-pos-item[data-active] { border-color: var(--notsho-color-accent); color: var(--notsho-color-text); box-shadow: 0 0 0 1px var(--notsho-color-accent); }
+.ncd-pos-item[data-active] svg { color: var(--notsho-color-accent); }
+.ncd-pos-item:focus-visible { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); outline-offset: 2px; }
+.ncd-hint { margin: 0; color: var(--notsho-color-text-subtle); font-size: var(--notsho-size-xs); }
+.ncd-settings { min-width: 18rem; }
+/* "Flip" between the appearance controls and panel settings. */
+.ncd-panel[data-view] { animation: ncd-flip var(--notsho-motion-duration-normal) var(--notsho-motion-easing-standard); }
+@keyframes ncd-flip { from { opacity: 0; transform: perspective(60rem) rotateY(-12deg); } to { opacity: 1; transform: none; } }
 
 @media (max-width: 40rem) {
   .ncd[data-position="left"], .ncd[data-position="right"] { top: auto; bottom: 0; left: 0; right: 0; align-items: flex-end; justify-content: center; padding: 0 var(--notsho-space-4) var(--notsho-space-4); }
-  .ncd[data-position="left"] .ncd-panel, .ncd[data-position="right"] .ncd-panel { width: auto; }
+  .ncd[data-position="left"] .ncd-panel, .ncd[data-position="right"] .ncd-panel { width: auto; height: auto; border-radius: var(--notsho-radius-overlay); border-width: var(--notsho-border-width); box-shadow: var(--notsho-shadow-overlay); }
   .ncd[data-position="left"] .ncd-handle, .ncd[data-position="right"] .ncd-handle { writing-mode: initial; height: var(--notsho-size-control); width: auto; padding: 0 var(--notsho-space-3) 0 var(--notsho-space-2); }
 }
 

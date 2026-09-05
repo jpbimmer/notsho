@@ -1,5 +1,6 @@
 import { useTheme } from "@notsho/theme";
-import { CustomizerDock } from "@notsho/customizer";
+import { useState } from "react";
+import { CustomizerDock, dockInset, type DockState } from "@notsho/customizer";
 import { Button } from "@notsho/registry/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@notsho/registry/card";
 import { Input } from "@notsho/registry/input";
@@ -19,8 +20,9 @@ const fonts = { sans: "Sans-serif", serif: "Serif", mono: "Monospace" };
 export function App() {
   const { theme, resolvedScheme, hydrated } = useTheme();
   const toast = useToast();
+  const [dock, setDock] = useState<DockState>({ position: "bottom", open: false });
   return (
-    <div className="frame">
+    <div className="frame" style={dockInset(dock)} data-dock={dock.open ? dock.position : undefined}>
       <header className="frame-bar">
         <span className="frame-brand">Notsho</span>
         <span className="frame-status" data-testid="status">
@@ -188,7 +190,7 @@ export function App() {
         </Card>
       </section>
       </main>
-      <CustomizerDock defaultOpen />
+      <CustomizerDock defaultOpen onPositionChange={(position) => setDock((d) => ({ ...d, position }))} onOpenChange={(open) => setDock((d) => ({ ...d, open }))} />
     </div>
   );
 }
