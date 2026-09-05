@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { compile, compileCss, compileTs } from "./build.ts";
+import { compile, compileCss, compileTs, compileTailwind } from "./build.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const src = readFileSync(join(here, "../src/tokens.json"), "utf8");
@@ -75,4 +75,14 @@ test("rejects circular references", () => {
 
 test("rejects missing $type", () => {
   assert.throws(() => compile(wrap({ semantic: { a: { $value: "red" } } }), "t"), /has no \$type/);
+});
+
+test("tailwind preset maps semantic namespaces", () => {
+  const tw = compileTailwind(compile(src, "test"));
+  assert.match(tw, /@theme inline \{/);
+  assert.match(tw, /--color-accent: var\(--notsho-color-accent\);/);
+  assert.match(tw, /--radius-control: var\(--notsho-radius-control\);/);
+  assert.match(tw, /--spacing-inset: var\(--notsho-space-inset\);/);
+  assert.match(tw, /--text-xl: var\(--notsho-size-xl\);/);
+  assert.doesNotMatch(tw, /--color-blue-500/, "primitives must not leak into utilities");
 });

@@ -1,0 +1,26 @@
+{
+  "name": "notsho",
+  "version": "0.0.1",
+  "description": "Notsho CLI: init a project, copy components from the registry, lint for token drift, and generate the agent rules pack.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "notsho": "./dist/bin.js" },
+  "files": ["dist", "registry"],
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && rm -rf registry && cp -R ../../registry ./registry && rm -rf registry/node_modules registry/tsconfig.json registry/package.json && chmod +x dist/bin.js",
+    "test": "tsx --test src/*.test.ts",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "dependencies": {
+    "@notsho/theme": "workspace:*",
+    "@notsho/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
