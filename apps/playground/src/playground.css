@@ -31,6 +31,13 @@ body { overflow: hidden; }
   transition: background var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
 }
 .pg-btn:hover { background: var(--notsho-color-accent-hover); }
-.pg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: var(--notsho-space-section); align-items: start; }
+/* Masonry-style fill: columns pack cards vertically with no gaps. */
+.pg-grid { column-width: 20rem; column-gap: var(--notsho-space-section); }
+.pg-grid > * { break-inside: avoid; margin-bottom: var(--notsho-space-section); }
+/* Row-ordered masonry where supported. */
+@supports (grid-template-rows: masonry) {
+  .pg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); grid-template-rows: masonry; gap: var(--notsho-space-section); column-width: auto; }
+  .pg-grid > * { margin-bottom: 0; }
+}
 .pg-stack { display: flex; flex-direction: column; gap: var(--notsho-space-stack); }
 .pg-row { display: flex; gap: var(--notsho-space-stack); align-items: center; flex-wrap: wrap; }
