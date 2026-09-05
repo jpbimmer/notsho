@@ -157,7 +157,25 @@ accent and the whole thing re-skins. That screenshot is the pitch.
 - **Customizer:** user-facing in production by default. Dev-only is a flag.
 - **Default look:** neutral defaults, striking presets.
 
-## 9. Standing assumptions
+## 9. Status (2026-09-05)
+
+Steps 1–8 complete. `apps/playground` serves as the docs/dogfooding surface for now;
+a standalone docs site is deferred until the API settles.
+
+| Step | Status |
+|---|---|
+| 1 Tokens + compiler | done — 205 tokens, CSS/manifest/types/Tailwind preset |
+| 2 Theme runtime | done — provider, adapters, no-flash script |
+| 3–5 Components | done — 13 in `registry/`, Base UI + CSS Modules |
+| 4/6 Customizer | done — Colors/Type/Shape/Motion tabs, export, dock with settings view |
+| 7 CLI + rules pack | done — `notsho init/add/doctor/rules/tokens/export-theme` |
+| 8 MCP server | done — 7 tools, 2 resources |
+| 9 Docs | README + playground; site deferred |
+
+Backlog: contrast enforcement (APCA) in derivation · docs site · `dev` watch across
+packages · publish to npm under `@notsho/*` · more presets · component tests.
+
+## 10. Standing assumptions
 
 - Tailwind **v4 only**. React 19. SSR-safe incl. Next App Router (no-flash inline script).
 - Fonts: curated Google Fonts list + custom URL. Self-host guidance in docs.

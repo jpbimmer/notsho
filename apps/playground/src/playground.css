@@ -41,3 +41,11 @@ body { overflow: hidden; }
 }
 .pg-stack { display: flex; flex-direction: column; gap: var(--notsho-space-stack); }
 .pg-row { display: flex; gap: var(--notsho-space-stack); align-items: center; flex-wrap: wrap; }
+.pg-code {
+  margin: 0; padding: var(--notsho-space-3) var(--notsho-space-4); overflow-x: auto;
+  background: var(--notsho-color-surface-sunken); border: var(--notsho-border-width) solid var(--notsho-color-border);
+  border-radius: min(var(--notsho-radius-card), 0.75rem);
+  font-family: var(--notsho-font-code); font-size: var(--notsho-size-xs); line-height: var(--notsho-leading-loose); color: var(--notsho-color-text);
+}
+.pg-muted { margin: 0; color: var(--notsho-color-text-muted); font-size: var(--notsho-size-sm); }
+.pg-muted code { font-family: var(--notsho-font-code); font-size: var(--notsho-size-xs); background: var(--notsho-color-surface-sunken); padding: 1px 5px; border-radius: 4px; }
