@@ -1,0 +1,27 @@
+{
+  "name": "@notsho/mcp",
+  "version": "0.0.1",
+  "description": "MCP server exposing Notsho tokens, components, theme derivation, and token-drift validation to coding agents.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "notsho-mcp": "./dist/server.js" },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && chmod +x dist/server.js",
+    "test": "tsx --test src/*.test.ts",
+    "typecheck": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@notsho/customizer": "workspace:*",
+    "@notsho/theme": "workspace:*",
+    "@notsho/tokens": "workspace:*",
+    "notsho": "workspace:*",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

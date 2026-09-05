@@ -7,7 +7,7 @@ import type { Registry } from "./lib.js";
 
 const require = createRequire(import.meta.url);
 
-interface ManifestToken { name: string; tier: string; type: string; cssVar: string; description?: string; group?: string; resolved: { light: string; dark: string } }
+export interface ManifestToken { name: string; tier: string; type: string; cssVar: string; description?: string; group?: string; value: string | Record<string, string>; refs: string[]; resolved: { light: string; dark: string } }
 interface Manifest { prefix: string; version: string; tokens: ManifestToken[] }
 
 export function loadManifest(): Manifest {
