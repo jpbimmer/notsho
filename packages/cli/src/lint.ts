@@ -21,7 +21,7 @@ const RULES: Rule[] = [
   { rule: "hardcoded-color", re: /#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})\b/gi, message: "Hex color literal.", suggestion: "Use a semantic color token, e.g. var(--notsho-color-accent)." },
   { rule: "hardcoded-color", re: /\b(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\(/gi, message: "Color function literal.", suggestion: "Use a semantic color token, e.g. var(--notsho-color-text-muted)." },
   { rule: "hardcoded-font-size", re: /font-size\s*:\s*\d[\d.]*(?:px|rem|em|pt)/gi, message: "Fixed font-size.", suggestion: "Use var(--notsho-size-*) or var(--notsho-text-body-size).", css: true },
-  { rule: "hardcoded-font-family", re: /font-family\s*:\s*(?!var\(|inherit)[^;]+/gi, message: "Fixed font-family.", suggestion: "Use var(--notsho-font-body|heading|code).", css: true },
+  { rule: "hardcoded-font-family", re: /font-family\s*:\s*(?!\s|var\(|inherit)[^;\s][^;]*/gi, message: "Fixed font-family.", suggestion: "Use var(--notsho-font-body|heading|code).", css: true },
   { rule: "hardcoded-radius", re: /border-radius\s*:\s*\d[\d.]*(?:px|rem|em)/gi, message: "Fixed border-radius.", suggestion: "Use var(--notsho-radius-control|card|overlay|pill).", css: true },
   { rule: "hardcoded-shadow", re: /box-shadow\s*:\s*(?!none|var\()\d/gi, message: "Fixed box-shadow.", suggestion: "Use var(--notsho-shadow-raised|floating|overlay).", css: true },
   { rule: "hardcoded-duration", re: /(?:transition|animation)(?:-duration)?\s*:[^;]*?\b\d+m?s\b/gi, message: "Fixed duration.", suggestion: "Use var(--notsho-motion-duration-fast|normal|slow).", css: true },

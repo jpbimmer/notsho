@@ -7,6 +7,13 @@ import { lintSource } from "./lint.ts";
 import { generateRules, loadManifest, mergeRules, RULES_START, RULES_END } from "./rules.ts";
 import { copyComponent, copyShared, loadRegistry, resolveComponents, rewriteImports, rewrittenRegistryHash, installedHash } from "./lib.ts";
 
+test("lint allows font-family from a token", () => {
+  const css = `.a { font-family: var(--notsho-font-heading); }\n.b {\n  font-family: var(--notsho-font-body);\n}\n.c { font-family: inherit; }`;
+  assert.deepEqual(lintSource(css, { filename: "x.module.css" }), []);
+  const bad = lintSource(".d { font-family: Georgia, serif; }", { filename: "x.module.css" });
+  assert.equal(bad[0]?.rule, "hardcoded-font-family");
+});
+
 test("lint flags hardcoded values and respects ignores", () => {
   const css = `.a { color: #fff; background: rgb(0 0 0); font-size: 14px; border-radius: 8px; box-shadow: 0 1px 2px #000; transition: all 200ms; }
 .b { color: var(--notsho-color-text, #000); border-radius: var(--notsho-radius-card); } /* fallback allowed */
