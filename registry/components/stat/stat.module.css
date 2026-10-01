@@ -23,7 +23,7 @@
   font-weight: var(--notsho-text-heading-weight);
   letter-spacing: var(--notsho-text-heading-tracking);
   line-height: var(--notsho-leading-tight);
-  font-variant-numeric: tabular-nums;
+  /* Proportional figures: tabular gives every digit a 0's width, which looks loose at display sizes. */
 }
 .unit { color: var(--notsho-color-text-muted); font-size: var(--notsho-size-sm); }
 .delta {
