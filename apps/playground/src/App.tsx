@@ -21,6 +21,8 @@ import { Command, CommandGroup, CommandItem, CommandEmpty, useCommandShortcut } 
 import { DataTable, createColumnHelper } from "@notsho/registry/data-table";
 import { Stat, StatGroup } from "@notsho/registry/stat";
 import { EmptyState } from "@notsho/registry/empty-state";
+import { Slider } from "@notsho/registry/slider";
+import { Rating } from "@notsho/registry/rating";
 import { SearchIcon } from "@notsho/registry/lib/icons";
 
 type Venue = { id: string; name: string; city: string; visits: number };
@@ -57,6 +59,20 @@ function NavDemo() {
           ))}
         </NavSection>
       </Nav>
+    </div>
+  );
+}
+
+function SliderRatingDemo() {
+  const [rating, setRating] = useState(4);
+  return (
+    <div className="pg-stack">
+      <Slider label="Fill" defaultValue={0.6} min={0} max={1} step={0.05} showValue={(v) => `${Math.round(v * 100)}% left`} />
+      <Slider size="lg" aria-label="Volume" defaultValue={30} />
+      <div className="pg-row">
+        <Rating value={rating} onValueChange={setRating} />
+        <Rating readOnly size="sm" value={3} />
+      </div>
     </div>
   );
 }
@@ -264,7 +280,7 @@ claude mcp add notsho -- npx -y @notsho/mcp`}</pre>
         <Card>
           <CardHeader>
             <CardTitle>Data</CardTitle>
-            <CardDescription>Stat, Segmented, DataTable, EmptyState.</CardDescription>
+            <CardDescription>Stat, Segmented, DataTable, Slider, Rating, EmptyState.</CardDescription>
           </CardHeader>
           <CardContent className="pg-stack">
             <StatGroup>
@@ -277,6 +293,7 @@ claude mcp add notsho -- npx -y @notsho/mcp`}</pre>
             <div style={{ height: "16rem", border: "var(--notsho-border-width) solid var(--notsho-color-border)", borderRadius: "var(--notsho-radius-control)", overflow: "hidden" }}>
               <DataTable data={venues} columns={venueColumns} onRowClick={() => {}} activeRowId="2" />
             </div>
+            <SliderRatingDemo />
             <EmptyState size="sm" icon={<SearchIcon />} title="No bars yet" description="Import your Swarm export to see every bar you've checked into.">
               <Button size="sm">Import</Button>
             </EmptyState>

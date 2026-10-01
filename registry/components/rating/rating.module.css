@@ -1,0 +1,17 @@
+.root { --_size: var(--notsho-space-6); display: inline-flex; gap: var(--notsho-space-0-5); }
+.root[data-size="sm"] { --_size: var(--notsho-space-4); gap: 0; }
+
+.star {
+  display: inline-flex;
+  width: var(--_size); height: var(--_size);
+  padding: 0; border: 0; background: transparent;
+  /* Empty stars are controls: text-subtle clears the 3:1 non-text contrast floor; border-strong doesn't. */
+  color: var(--notsho-color-text-subtle);
+  fill: currentColor;
+  cursor: pointer;
+  transition: color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard), transform var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
+}
+.star[data-on] { color: var(--notsho-color-warning); }
+button.star:hover { transform: scale(1.1); }
+button.star:focus-visible { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); border-radius: var(--notsho-radius-xs); }
+.root[data-readonly] .star { cursor: default; }

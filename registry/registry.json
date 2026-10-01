@@ -433,6 +433,46 @@
         "radius.full",
         "size.*"
       ]
+    },
+    "slider": {
+      "description": "Single-value slider with optional label and live value; touch-sized thumb at size lg.",
+      "files": [
+        "components/slider/index.ts",
+        "components/slider/slider.tsx",
+        "components/slider/slider.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "color.accent",
+        "color.surface-*",
+        "color.border",
+        "color.text*",
+        "color.focus-ring",
+        "shadow.raised",
+        "radius.full",
+        "border.*",
+        "motion.*"
+      ]
+    },
+    "rating": {
+      "description": "Star rating as a radio group (click again to clear), or read-only display.",
+      "files": [
+        "components/rating/index.ts",
+        "components/rating/rating.tsx",
+        "components/rating/rating.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.warning",
+        "color.border-strong",
+        "color.focus-ring",
+        "radius.xs",
+        "motion.*"
+      ]
     }
   }
 }
