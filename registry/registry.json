@@ -290,6 +290,149 @@
         "radius.card",
         "shadow.floating"
       ]
+    },
+    "sheet": {
+      "description": "Edge-anchored panel (right, left, or bottom) with swipe-to-dismiss. Header/body/footer parts; body scrolls.",
+      "files": [
+        "components/sheet/index.ts",
+        "components/sheet/sheet.tsx",
+        "components/sheet/sheet.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "dialog.*",
+        "color.scrim",
+        "color.border*",
+        "shadow.overlay",
+        "radius.overlay",
+        "radius.full",
+        "motion.*",
+        "font.heading",
+        "text.heading-*"
+      ]
+    },
+    "segmented": {
+      "description": "Single-choice segmented control for views and filters (List | Map). Built on Tabs segmented variant.",
+      "files": [
+        "components/segmented/index.ts",
+        "components/segmented/segmented.tsx",
+        "components/segmented/segmented.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "tabs"
+      ],
+      "tokens": []
+    },
+    "nav": {
+      "description": "App navigation: vertical sidebar sections, or a horizontal phone tab bar. Items render as router links.",
+      "files": [
+        "components/nav/index.ts",
+        "components/nav/nav.tsx",
+        "components/nav/nav.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "color.accent*",
+        "color.surface-*",
+        "color.text*",
+        "color.focus-ring",
+        "size.control*",
+        "radius.control",
+        "tracking.wide",
+        "motion.*"
+      ]
+    },
+    "command": {
+      "description": "Command palette: dialog with search input and keyboard-navigable grouped results. Includes useCommandShortcut for Cmd+K.",
+      "files": [
+        "components/command/index.ts",
+        "components/command/command.tsx",
+        "components/command/command.module.css"
+      ],
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "dialog.*",
+        "color.scrim",
+        "color.surface-hover",
+        "color.accent",
+        "color.text*",
+        "color.border",
+        "shadow.overlay",
+        "size.control-lg",
+        "radius.control",
+        "motion.*"
+      ]
+    },
+    "data-table": {
+      "description": "Virtualized, sortable table on TanStack Table + Virtual. Column meta sets width, alignment, and mobile visibility.",
+      "files": [
+        "components/data-table/index.ts",
+        "components/data-table/data-table.tsx",
+        "components/data-table/data-table.module.css"
+      ],
+      "dependencies": [
+        "@tanstack/react-table",
+        "@tanstack/react-virtual"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "color.surface*",
+        "color.accent*",
+        "color.border",
+        "color.text*",
+        "color.focus-ring",
+        "size.control-lg",
+        "radius.xs",
+        "motion.*"
+      ]
+    },
+    "stat": {
+      "description": "Headline number with label, unit, delta, and hint. StatGroup lays several out responsively.",
+      "files": [
+        "components/stat/index.ts",
+        "components/stat/stat.tsx",
+        "components/stat/stat.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "font.heading",
+        "text.heading-*",
+        "size.*",
+        "color.text*",
+        "color.success",
+        "color.danger"
+      ]
+    },
+    "empty-state": {
+      "description": "Icon, title, description, and actions for empty lists and zero-data views.",
+      "files": [
+        "components/empty-state/index.ts",
+        "components/empty-state/empty-state.tsx",
+        "components/empty-state/empty-state.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.surface-sunken",
+        "color.border",
+        "color.text*",
+        "font.heading",
+        "radius.full",
+        "size.*"
+      ]
     }
   }
 }

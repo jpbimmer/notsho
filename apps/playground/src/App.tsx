@@ -14,6 +14,71 @@ import { Tabs, TabsList, Tab, TabPanel } from "@notsho/registry/tabs";
 import { Tooltip, TooltipProvider } from "@notsho/registry/tooltip";
 import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from "@notsho/registry/menu";
 import { useToast } from "@notsho/registry/toast";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetBody, SheetFooter, SheetClose } from "@notsho/registry/sheet";
+import { Segmented } from "@notsho/registry/segmented";
+import { Nav, NavSection, NavItem } from "@notsho/registry/nav";
+import { Command, CommandGroup, CommandItem, CommandEmpty, useCommandShortcut } from "@notsho/registry/command";
+import { DataTable, createColumnHelper } from "@notsho/registry/data-table";
+import { Stat, StatGroup } from "@notsho/registry/stat";
+import { EmptyState } from "@notsho/registry/empty-state";
+import { SearchIcon } from "@notsho/registry/lib/icons";
+
+type Venue = { id: string; name: string; city: string; visits: number };
+const venues: Venue[] = Array.from({ length: 200 }, (_, i) => ({
+  id: String(i),
+  name: ["Sycamore Den", "The Rose", "Bar Moga", "Attaboy", "Death & Co", "Please Don't Tell", "Dutch Kills"][i % 7]! + (i > 6 ? ` ${Math.floor(i / 7) + 1}` : ""),
+  city: ["Brooklyn", "New York", "Asheville", "Chicago"][i % 4]!,
+  visits: (i * 37) % 41 + 1,
+}));
+const col = createColumnHelper<Venue>();
+const venueColumns = [
+  col.accessor("name", { header: "Venue", meta: { width: "minmax(10rem, 2fr)" } }),
+  col.accessor("city", { header: "City", meta: { hideOnMobile: true } }),
+  col.accessor("visits", { header: "Visits", meta: { align: "end", width: "5rem" } }),
+];
+const commandItems = ["Check-ins", "Spirits", "Rittenhouse BIB", "Attaboy", "Laphroaig 10", "Settings"];
+
+function NavDemo() {
+  const [active, setActive] = useState("checkins");
+  const items = [["home", "Home", 0], ["checkins", "Check-ins", 6698], ["spirits", "Spirits", 112]] as const;
+  return (
+    <div className="pg-stack">
+      <Nav>
+        <NavSection label="Datasets">
+          {items.map(([id, label, count]) => (
+            <NavItem key={id} href="#" active={active === id} count={count || undefined} icon={<SearchIcon />} onClick={(e) => { e.preventDefault(); setActive(id); }}>{label}</NavItem>
+          ))}
+        </NavSection>
+      </Nav>
+      <Nav orientation="horizontal" style={{ borderTop: "var(--notsho-border-width) solid var(--notsho-color-border)" }}>
+        <NavSection>
+          {items.map(([id, label]) => (
+            <NavItem key={id} href="#" active={active === id} icon={<SearchIcon />} onClick={(e) => { e.preventDefault(); setActive(id); }}>{label}</NavItem>
+          ))}
+        </NavSection>
+      </Nav>
+    </div>
+  );
+}
+
+function CommandDemo() {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  useCommandShortcut(() => setOpen((o) => !o));
+  const results = commandItems.filter((c) => c.toLowerCase().includes(query.toLowerCase()));
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>Command ⌘K</Button>
+      <Command open={open} onOpenChange={setOpen} query={query} onQueryChange={setQuery} placeholder="Search everything…" footer={<><span>↑↓ navigate</span><span>↵ open</span></>}>
+        {results.length ? (
+          <CommandGroup heading="Results">
+            {results.map((r) => <CommandItem key={r} icon={<SearchIcon />} hint="Dataset" description="Jump to it" onSelect={() => setOpen(false)}>{r}</CommandItem>)}
+          </CommandGroup>
+        ) : <CommandEmpty>No matches for “{query}”</CommandEmpty>}
+      </Command>
+    </>
+  );
+}
 
 const fonts = { sans: "Sans-serif", serif: "Serif", mono: "Monospace" };
 
@@ -192,6 +257,66 @@ claude mcp add notsho -- npx -y @notsho/mcp`}</pre>
                 <Tab value="day">Day</Tab><Tab value="week">Week</Tab><Tab value="month">Month</Tab>
               </TabsList>
             </Tabs>
+          </CardContent>
+        </Card>
+
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Data</CardTitle>
+            <CardDescription>Stat, Segmented, DataTable, EmptyState.</CardDescription>
+          </CardHeader>
+          <CardContent className="pg-stack">
+            <StatGroup>
+              <Stat label="Check-ins" value="6,698" delta="+42" trend="up" hint="since 2009" />
+              <Stat label="Bottles" value="112" unit="on hand" />
+              <Stat label="Restock" value="24" delta="−3" trend="down" />
+            </StatGroup>
+            <Segmented aria-label="View" options={[{ value: "list", label: "List" }, { value: "map", label: "Map" }, { value: "stats", label: "Stats" }]} />
+            <Segmented fullWidth aria-label="Range" options={[{ value: "d", label: "Day" }, { value: "w", label: "Week" }, { value: "m", label: "Month" }]} defaultValue="w" />
+            <div style={{ height: "16rem", border: "var(--notsho-border-width) solid var(--notsho-color-border)", borderRadius: "var(--notsho-radius-control)", overflow: "hidden" }}>
+              <DataTable data={venues} columns={venueColumns} onRowClick={() => {}} activeRowId="2" />
+            </div>
+            <EmptyState size="sm" icon={<SearchIcon />} title="No bars yet" description="Import your Swarm export to see every bar you've checked into.">
+              <Button size="sm">Import</Button>
+            </EmptyState>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Navigation</CardTitle>
+            <CardDescription>Nav (sidebar + tab bar), Sheet, Command.</CardDescription>
+          </CardHeader>
+          <CardContent className="pg-stack">
+            <NavDemo />
+            <div className="pg-row">
+              <Sheet>
+                <SheetTrigger render={<Button variant="secondary" />}>Side sheet</SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Rittenhouse BIB</SheetTitle>
+                    <SheetDescription>Rye · 100 proof · 750ml</SheetDescription>
+                  </SheetHeader>
+                  <SheetBody><p className="pg-muted">Swipe right or press Esc to dismiss.</p></SheetBody>
+                  <SheetFooter>
+                    <SheetClose render={<Button variant="ghost" />}>Close</SheetClose>
+                    <Button>Mark finished</Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+              <Sheet side="bottom">
+                <SheetTrigger render={<Button variant="secondary" />}>Bottom sheet</SheetTrigger>
+                <SheetContent>
+                  <SheetHeader><SheetTitle>Quick actions</SheetTitle></SheetHeader>
+                  <SheetBody className="pg-stack">
+                    <Button variant="secondary">Open bottle</Button>
+                    <Button variant="secondary">Adjust fill</Button>
+                  </SheetBody>
+                </SheetContent>
+              </Sheet>
+              <CommandDemo />
+            </div>
           </CardContent>
         </Card>
 

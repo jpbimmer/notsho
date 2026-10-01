@@ -6,6 +6,7 @@
   "type": "module",
   "exports": {
     "./*": "./components/*/index.ts",
+    "./lib/icons": "./lib/icons.tsx",
     "./lib/*": "./lib/*.ts",
     "./registry.json": "./registry.json"
   },
@@ -14,8 +15,16 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
+    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-virtual": "^3.14.13",
     "clsx": "^2.1.1"
   },
-  "peerDependencies": { "react": "^19.0.0" },
-  "devDependencies": { "@types/react": "^19.0.0", "react": "^19.0.0", "typescript": "^5.7.0" }
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
 }

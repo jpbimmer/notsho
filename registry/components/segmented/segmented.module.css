@@ -1,0 +1,5 @@
+.root { display: inline-flex; flex-direction: row; gap: 0; align-self: flex-start; }
+.root[data-full-width] { display: flex; width: 100%; align-self: stretch; }
+.root[data-full-width] .list { display: flex; width: 100%; box-sizing: border-box; }
+.root[data-full-width] .item { flex: 1 1 0; justify-content: center; }
+.item { justify-content: center; }
