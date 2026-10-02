@@ -2,6 +2,7 @@
 import { Select as BaseSelect } from "@base-ui/react/select";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import { CheckIcon, ChevronUpDownIcon } from "../../lib/icons";
 import styles from "./select.module.css";
 
@@ -31,7 +32,7 @@ export function Select<V = string>({ placeholder = "Select…", size = "md", cla
         <BaseSelect.Value className={styles.value} placeholder={placeholder} />
         <BaseSelect.Icon className={styles.icon}><ChevronUpDownIcon /></BaseSelect.Icon>
       </BaseSelect.Trigger>
-      <BaseSelect.Portal>
+      <BaseSelect.Portal container={usePortalContainer()}>
         <BaseSelect.Positioner className={styles.positioner} sideOffset={6} alignItemWithTrigger={false}>
           <BaseSelect.Popup className={cx(styles.popup, popupClassName)}>
             <BaseSelect.List className={styles.list}>{children}</BaseSelect.List>

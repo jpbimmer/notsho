@@ -2,6 +2,7 @@
 import { Drawer } from "@base-ui/react/drawer";
 import { createContext, useContext, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import { XIcon } from "../../lib/icons";
 import styles from "./sheet.module.css";
 
@@ -36,7 +37,7 @@ export interface SheetContentProps extends ComponentPropsWithoutRef<typeof Drawe
 export function SheetContent({ size = "md", hideClose, className, children, ...rest }: SheetContentProps) {
   const side = useContext(SideContext);
   return (
-    <Drawer.Portal>
+    <Drawer.Portal container={usePortalContainer()}>
       <Drawer.Backdrop className={styles.backdrop} />
       <Drawer.Viewport data-side={side} className={styles.viewport}>
         <Drawer.Popup data-side={side} data-size={size} className={cx(styles.popup, className)} {...rest}>

@@ -1,4 +1,4 @@
-export { Customizer, type CustomizerProps, type CustomizerTab } from "./Customizer.js";
+export { Customizer, themeFromChoices, type CustomizerProps, type CustomizerTab, type ThemeChoices } from "./Customizer.js";
 export { fonts, fontById, fontStylesheets, deriveTypography, DEFAULT_TYPOGRAPHY, TYPOGRAPHY_DERIVED_TOKENS, type TypographyChoices, type FontOption } from "./typography.js";
 export { deriveShape, DEFAULT_SHAPE, SHAPE_DERIVED_TOKENS, type ShapeChoices, type Radius, type Density, type Elevation } from "./shape.js";
 export { deriveMotion, DEFAULT_MOTION, MOTION_DERIVED_TOKENS, type MotionChoices, type Speed } from "./motion.js";

@@ -2,6 +2,7 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import type { ComponentPropsWithoutRef, ReactElement, ReactNode } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import styles from "./tooltip.module.css";
 
 /** Wrap a region once so adjacent tooltips open instantly after the first. */
@@ -21,7 +22,7 @@ export function Tooltip({ content, children, side = "top", className, ...rest }:
   return (
     <BaseTooltip.Root {...rest}>
       <BaseTooltip.Trigger render={children} />
-      <BaseTooltip.Portal>
+      <BaseTooltip.Portal container={usePortalContainer()}>
         <BaseTooltip.Positioner side={side} sideOffset={6} className={styles.positioner}>
           <BaseTooltip.Popup className={cx(styles.popup, className)}>
             <BaseTooltip.Arrow className={styles.arrow} />

@@ -2,6 +2,7 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import type { ComponentPropsWithoutRef } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import { XIcon } from "../../lib/icons";
 import styles from "./dialog.module.css";
 
@@ -18,7 +19,7 @@ export interface DialogContentProps extends ComponentPropsWithoutRef<typeof Base
 /** Portal + backdrop + centered popup. Put DialogHeader/DialogFooter inside. */
 export function DialogContent({ hideClose, size = "md", className, children, ...rest }: DialogContentProps) {
   return (
-    <BaseDialog.Portal>
+    <BaseDialog.Portal container={usePortalContainer()}>
       <BaseDialog.Backdrop className={styles.backdrop} />
       <BaseDialog.Viewport className={styles.viewport}>
         <BaseDialog.Popup data-size={size} className={cx(styles.popup, className)} {...rest}>

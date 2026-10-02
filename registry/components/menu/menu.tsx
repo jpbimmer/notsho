@@ -2,6 +2,7 @@
 import { Menu as BaseMenu } from "@base-ui/react/menu";
 import type { ComponentPropsWithoutRef } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import styles from "./menu.module.css";
 
 /** Root. Compose: <Menu><MenuTrigger render={<Button/>}/><MenuContent><MenuItem/>…</MenuContent></Menu> */
@@ -15,7 +16,7 @@ export interface MenuContentProps extends ComponentPropsWithoutRef<typeof BaseMe
 
 export function MenuContent({ side = "bottom", align = "start", className, ...rest }: MenuContentProps) {
   return (
-    <BaseMenu.Portal>
+    <BaseMenu.Portal container={usePortalContainer()}>
       <BaseMenu.Positioner side={side} align={align} sideOffset={6} className={styles.positioner}>
         <BaseMenu.Popup className={cx(styles.popup, className)} {...rest} />
       </BaseMenu.Positioner>

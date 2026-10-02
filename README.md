@@ -84,6 +84,29 @@ Components: Button · Card · Input · Field · Badge · Checkbox · Switch · S
 
 ---
 
+### Provided themes and scopes
+
+A product can ship its own design and still let users override it. Themes stack
+in layers — **Notsho defaults → provided → user** — and unset tokens fall through.
+
+```tsx
+import { ThemeScope } from "@notsho/theme";
+import { themeFromChoices } from "@notsho/customizer";
+
+const provided = themeFromChoices({ colors: { accent: "#b45309" }, scheme: "dark" });
+
+<ThemeScope id="app:bar" provided={provided}>…</ThemeScope>
+```
+
+`ThemeScope` re-declares every themable token on its own element (so `var()` chains
+like `button.radius → radius.control` resolve inside it), stores the user's layer
+under `notsho-theme:<id>`, and hosts portals so dialogs, menus and tooltips opened
+inside take the scope's theme. The page's global theme doesn't leak in. Inside a
+scope, `useTheme()` edits the scope's user layer and exposes `provided`; the
+`Customizer` shows "<label> defaults" vs. customized, and Reset returns to the
+provided design. Use `ThemeScopeProvider` to edit a scope from outside it (a settings
+sheet), and `useThemeRoot()` to read the current tokens in JS.
+
 ## For agents
 
 - `AGENTS.md` (generated) states the rules: no literal colors/radii/sizes/shadows/durations; semantic tokens in app code; variants as data attributes; prefer registry components.

@@ -279,6 +279,14 @@ export type ThemableTokenName = SemanticTokenName | ComponentTokenName;
  */
 export type ThemeOverrides = Partial<Record<ThemableTokenName, string | Partial<Record<Mode, string>>>>;
 
+/**
+ * Default CSS for every themable token — what tokens.css declares, references
+ * included. Scoped themes re-declare these so \`var()\` chains resolve inside the scope.
+ */
+export const tokenDefaults: Record<ThemableTokenName, string | Record<Mode, string>> = {
+${m.tokens.filter((t) => t.tier !== "primitive").map((t) => `  ${JSON.stringify(t.name)}: ${JSON.stringify(t.css)},`).join("\n")}
+};
+
 /** \`var(--${m.prefix}-color-accent)\` from \`"color.accent"\`. */
 export function cssVar(name: TokenName, fallback?: string): string {
   return fallback === undefined ? \`var(\${tokens[name]})\` : \`var(\${tokens[name]}, \${fallback})\`;

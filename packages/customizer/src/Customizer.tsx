@@ -36,34 +36,77 @@ export interface CustomizerProps {
   headerActions?: ReactNode;
   /** Which tabs to show. Default: all. */
   tabs?: CustomizerTab[];
+  /**
+   * Name of what's being customized ("Bar Stocks"). The header says whether you're on
+   * its defaults or have customized it — shown even with `title={null}`, beside Reset.
+   */
+  scopeLabel?: string;
   className?: string;
 }
 
-/** Read a section's choices from theme.meta, falling back to defaults per key. */
-function readChoices<K extends SectionKey>(theme: Theme, key: K): Choices<K> {
-  const m = theme.meta?.[key];
+/**
+ * A section's choices: the user's layer, then the provided theme's, then
+ * Notsho defaults — per key, so a provided theme can set just an accent.
+ */
+function readChoices<K extends SectionKey>(theme: Theme, key: K, provided?: Theme): Choices<K> {
   const d = SECTIONS[key].defaults as unknown as Record<string, unknown>;
-  if (!m || typeof m !== "object") return SECTIONS[key].defaults;
   const out: Record<string, unknown> = { ...d };
-  for (const k of Object.keys(d)) if (k in (m as object)) out[k] = (m as Record<string, unknown>)[k];
+  for (const layer of [provided?.meta?.[key], theme.meta?.[key]]) {
+    if (!layer || typeof layer !== "object") continue;
+    for (const k of Object.keys(d)) if (k in (layer as object)) out[k] = (layer as Record<string, unknown>)[k];
+  }
   return out as unknown as Choices<K>;
+}
+
+export interface ThemeChoices {
+  scheme?: ColorScheme;
+  colors?: Partial<ColorChoices>;
+  typography?: Partial<TypographyChoices>;
+  shape?: Partial<ShapeChoices>;
+  motion?: Partial<MotionChoices>;
+}
+
+/**
+ * Build a provided theme from the same choices the customizer offers, so a
+ * product's shipped design and the user's edits speak one language:
+ *   <ThemeScope id="bar" provided={themeFromChoices({ colors: { accent: "#b45309" } })}>
+ */
+export function themeFromChoices(choices: ThemeChoices): Theme {
+  let overrides: ThemeOverrides = {};
+  const meta: Record<string, unknown> = {};
+  for (const key of Object.keys(SECTIONS) as SectionKey[]) {
+    const c = choices[key === "typography" ? "typography" : key] as Record<string, unknown> | undefined;
+    if (!c) continue;
+    const full = { ...(SECTIONS[key].defaults as object), ...c };
+    overrides = { ...overrides, ...(SECTIONS[key].derive as (x: unknown) => ThemeOverrides)(full) };
+    meta[key] = c;
+  }
+  return { scheme: choices.scheme ?? "system", overrides, ...(Object.keys(meta).length ? { meta } : {}) };
 }
 
 /**
  * End-user theme customizer. Drop into a settings page inside <ThemeProvider>.
  * Tabs: Colors, Type, Shape, Motion. Import "@notsho/customizer/styles.css" once.
  */
-export function Customizer({ preview = true, title = "Appearance", layout = "column", headerActions, tabs, className }: CustomizerProps) {
-  const { theme, setTheme, setScheme } = useTheme();
+export function Customizer({ preview = true, title = "Appearance", layout = "column", headerActions, tabs, scopeLabel, className }: CustomizerProps) {
+  const { theme, setTheme, setScheme, provided } = useTheme();
   const visibleTabs = tabs ? TABS.filter((t) => tabs.includes(t.id)) : TABS;
   const [tab, setTab] = useState<CustomizerTab>(visibleTabs[0]?.id ?? "colors");
   const [exporting, setExporting] = useState(false);
 
-  const colors = useMemo(() => readChoices(theme, "colors"), [theme]);
-  const typography = useMemo(() => readChoices(theme, "typography"), [theme]);
-  const shape = useMemo(() => readChoices(theme, "shape"), [theme]);
-  const motion = useMemo(() => readChoices(theme, "motion"), [theme]);
-  const isDefault = !Object.keys(SECTIONS).some((k) => theme.meta?.[k]);
+  const colors = useMemo(() => readChoices(theme, "colors", provided), [theme, provided]);
+  const typography = useMemo(() => readChoices(theme, "typography", provided), [theme, provided]);
+  const shape = useMemo(() => readChoices(theme, "shape", provided), [theme, provided]);
+  const motion = useMemo(() => readChoices(theme, "motion", provided), [theme, provided]);
+  const changed: Record<CustomizerTab, boolean> = {
+    colors: Boolean(theme.meta?.colors) || theme.scheme !== "system",
+    type: Boolean(theme.meta?.typography),
+    shape: Boolean(theme.meta?.shape),
+    motion: Boolean(theme.meta?.motion),
+  };
+  const isDefault = !Object.values(changed).some(Boolean);
+  const effectiveScheme = theme.scheme !== "system" ? theme.scheme : (provided?.scheme ?? "system");
+  const status = scopeLabel ? (isDefault ? `${scopeLabel} defaults` : `${scopeLabel} · customized`) : undefined;
 
   const apply = useCallback(<K extends SectionKey>(key: K, next: Choices<K>) => {
     const s = SECTIONS[key];
@@ -76,18 +119,22 @@ export function Customizer({ preview = true, title = "Appearance", layout = "col
     const overrides: ThemeOverrides = { ...theme.overrides };
     const meta = { ...theme.meta };
     for (const k of Object.keys(SECTIONS) as SectionKey[]) { for (const t of SECTIONS[k].tokens) delete overrides[t]; delete meta[k]; }
-    setTheme({ ...theme, overrides, meta });
+    // Back to whatever sits underneath: the provided theme, or Notsho defaults.
+    setTheme({ ...theme, scheme: "system", overrides, meta });
   }, [theme, setTheme]);
 
   return (
     <div className={`nc${className ? ` ${className}` : ""}`} data-notsho-customizer data-layout={layout} data-preview={preview || undefined}>
       <FontLoader choices={typography} />
       <div className="nc-controls">
-        {title !== null && (
+        {(title !== null || status) && (
           <header className="nc-head">
-            <h2 className="nc-title">{exporting ? "Export theme" : title}</h2>
+            <div className="nc-title-block">
+              {title !== null && <h2 className="nc-title">{exporting ? "Export theme" : title}</h2>}
+              {status && !exporting && <span className="nc-status" data-changed={!isDefault || undefined}>{status}</span>}
+            </div>
             <div className="nc-head-actions">
-              {!exporting && <button type="button" className="nc-link" onClick={resetAll} disabled={isDefault}>Reset</button>}
+              {!exporting && <button type="button" className="nc-link" onClick={resetAll} disabled={isDefault} title={provided ? "Back to the provided design" : "Back to defaults"}>Reset</button>}
               <button type="button" className="ncd-icon" data-active={exporting || undefined} onClick={() => setExporting((v) => !v)} aria-label={exporting ? "Back to controls" : "Export theme"} aria-pressed={exporting}>
                 <ExportIcon />
               </button>
@@ -103,12 +150,12 @@ export function Customizer({ preview = true, title = "Appearance", layout = "col
             {visibleTabs.length > 1 && (
               <div className="nc-tabs" role="tablist">
                 {visibleTabs.map((t) => (
-                  <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} className="nc-tab" data-active={tab === t.id || undefined} onClick={() => setTab(t.id)}>{t.label}</button>
+                  <button key={t.id} type="button" role="tab" aria-selected={tab === t.id} className="nc-tab" data-active={tab === t.id || undefined} onClick={() => setTab(t.id)}>{t.label}{changed[t.id] && <span className="nc-tab-dot" aria-label="customized" />}</button>
                 ))}
               </div>
             )}
             <div className="nc-sections" key={tab}>
-              {tab === "colors" && <ColorsTab scheme={theme.scheme} setScheme={setScheme} choices={colors} apply={(c) => apply("colors", c)} />}
+              {tab === "colors" && <ColorsTab scheme={effectiveScheme} setScheme={setScheme} choices={colors} apply={(c) => apply("colors", c)} />}
               {tab === "type" && <TypeTab choices={typography} apply={(c) => apply("typography", c)} />}
               {tab === "shape" && <ShapeTab choices={shape} apply={(c) => apply("shape", c)} />}
               {tab === "motion" && <MotionTab choices={motion} apply={(c) => apply("motion", c)} />}

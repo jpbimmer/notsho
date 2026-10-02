@@ -4,10 +4,12 @@
   "shared": {
     "files": [
       "lib/cx.ts",
-      "lib/icons.tsx"
+      "lib/icons.tsx",
+      "lib/portal.ts"
     ],
     "dependencies": [
-      "clsx"
+      "clsx",
+      "@notsho/theme"
     ]
   },
   "components": {

@@ -5,7 +5,7 @@
  * it writes one <style> element (so per-mode overrides get real cascade blocks)
  * and sets `data-theme` on the root. Nothing here touches React.
  */
-import { tokens, tokenTier, prefix as defaultPrefix, type ThemableTokenName, type ThemeOverrides, type Mode } from "@notsho/tokens";
+import { tokens, tokenTier, tokenDefaults, prefix as defaultPrefix, type ThemableTokenName, type ThemeOverrides, type Mode } from "@notsho/tokens";
 
 export type ColorScheme = Mode | "system";
 
@@ -19,6 +19,8 @@ export interface Theme {
 
 export const THEME_FORMAT_VERSION = 1;
 export const DEFAULT_STORAGE_KEY = "notsho-theme";
+/** Storage key for a scope's user layer. */
+export const scopeStorageKey = (scope: string) => `${DEFAULT_STORAGE_KEY}:${scope}`;
 export const STYLE_ELEMENT_ID = "notsho-theme";
 
 export const emptyTheme = (): Theme => ({ scheme: "system", overrides: {} });
@@ -102,6 +104,64 @@ export function themeToCss(overrides: ThemeOverrides, prefix: string = defaultPr
     css += `[data-theme="dark"]{${d}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){${d}}}`;
   }
   return css;
+}
+
+// ─── Layers and scopes ───────────────────────────────────────────────────────
+//
+// A product built on Notsho can ship a *provided* theme — its own defaults —
+// and still let the user override it. Layers stack lowest → highest:
+//   Notsho defaults → provided → user. Unset tokens fall through.
+// A scope applies a stack to one subtree (an app inside a larger app), so the
+// page's global theme and the scope's theme don't leak into each other.
+
+type Value = NonNullable<ThemeOverrides[ThemableTokenName]>;
+
+/** Stack override maps; later layers win. A moded value only replaces the modes it sets. */
+export function mergeOverrides(...layers: (ThemeOverrides | undefined)[]): ThemeOverrides {
+  const out: ThemeOverrides = {};
+  for (const layer of layers) {
+    if (!layer) continue;
+    for (const [k, v] of Object.entries(layer) as [ThemableTokenName, Value | undefined][]) {
+      if (v === undefined) continue;
+      const prev = out[k];
+      if (typeof v === "string" || prev === undefined || typeof prev === "string") out[k] = v;
+      else out[k] = { ...prev, ...v };
+    }
+  }
+  return out;
+}
+
+/** Stack whole themes: overrides merge, the highest non-"system" scheme wins, meta merges per key. */
+export function mergeThemes(...layers: (Theme | undefined)[]): Theme {
+  const present = layers.filter((l): l is Theme => Boolean(l));
+  const scheme = [...present].reverse().find((l) => l.scheme !== "system")?.scheme ?? "system";
+  const meta = Object.assign({}, ...present.map((l) => l.meta ?? {}));
+  return { scheme, overrides: mergeOverrides(...present.map((l) => l.overrides)), ...(Object.keys(meta).length ? { meta } : {}) };
+}
+
+const valueFor = (v: Value, mode: Mode) => (typeof v === "string" ? v : v[mode]);
+
+/**
+ * CSS that re-declares every themable token under `selector`, so `var()` chains
+ * (button.radius → radius.control) resolve inside the scope rather than inheriting
+ * the page's computed values. The light block is the default; the dark block
+ * applies when the scope element has data-scheme="dark".
+ */
+export function scopeToCss(selector: string, overrides: ThemeOverrides, prefix: string = defaultPrefix): string {
+  const light: string[] = ["color-scheme:light"];
+  const dark: string[] = ["color-scheme:dark"];
+  for (const name of Object.keys(tokenDefaults) as ThemableTokenName[]) {
+    const def = tokenDefaults[name] as Value;
+    const v = overrides[name];
+    const pick = (mode: Mode) => (v !== undefined ? (valueFor(v, mode) ?? valueFor(def, mode)) : valueFor(def, mode));
+    const cssVar = tokenToVar(name, prefix);
+    const l = pick("light");
+    const d = pick("dark");
+    if (l) light.push(`${cssVar}:${sanitize(l)}`);
+    if (d && d !== l) dark.push(`${cssVar}:${sanitize(d)}`);
+  }
+  // [data-scheme] lifts both blocks above the page theme's [data-theme] rules regardless of order.
+  return `${selector}[data-scheme]{${light.join(";")}}${selector}[data-scheme="dark"]{${dark.join(";")}}`;
 }
 
 // ─── DOM application ─────────────────────────────────────────────────────────

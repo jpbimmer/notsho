@@ -5,6 +5,7 @@ import {
   type ComponentPropsWithoutRef, type KeyboardEvent, type PointerEvent, type ReactNode, type Ref,
 } from "react";
 import { cx } from "../../lib/cx";
+import { usePortalContainer } from "../../lib/portal";
 import { SearchIcon } from "../../lib/icons";
 import styles from "./command.module.css";
 
@@ -129,7 +130,7 @@ export interface CommandProps extends Omit<CommandPanelProps, "variant" | "size"
 export function Command({ open, onOpenChange, placeholder = "Search…", className, ...panel }: CommandProps) {
   return (
     <BaseDialog.Root open={open} onOpenChange={onOpenChange}>
-      <BaseDialog.Portal>
+      <BaseDialog.Portal container={usePortalContainer()}>
         <BaseDialog.Backdrop className={styles.backdrop} />
         <BaseDialog.Viewport className={styles.viewport}>
           <BaseDialog.Popup className={cx(styles.popup, className)} aria-label={placeholder}>
