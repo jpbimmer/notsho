@@ -352,7 +352,7 @@
       ]
     },
     "command": {
-      "description": "Command palette: dialog with search input and keyboard-navigable grouped results. Includes useCommandShortcut for Cmd+K.",
+      "description": "Command palette: dialog with search input and keyboard-navigable grouped results, plus CommandPanel for the same thing inline on a page (lg size for a hero prompt). Includes useCommandShortcut for Cmd+K.",
       "files": [
         "components/command/index.ts",
         "components/command/command.tsx",

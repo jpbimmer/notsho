@@ -2,15 +2,13 @@
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import {
   useCallback, useEffect, useLayoutEffect, useRef, useState,
-  type ComponentPropsWithoutRef, type KeyboardEvent, type PointerEvent, type ReactNode,
+  type ComponentPropsWithoutRef, type KeyboardEvent, type PointerEvent, type ReactNode, type Ref,
 } from "react";
 import { cx } from "../../lib/cx";
 import { SearchIcon } from "../../lib/icons";
 import styles from "./command.module.css";
 
-export interface CommandProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+export interface CommandPanelProps {
   /** Controlled query. Filtering is yours — render only the items that match. */
   query: string;
   onQueryChange: (query: string) => void;
@@ -19,6 +17,24 @@ export interface CommandProps {
   loading?: boolean;
   /** Optional row under the list, e.g. keyboard hints. Hidden on narrow screens. */
   footer?: ReactNode;
+  /** Replaces the leading search icon. */
+  icon?: ReactNode;
+  /** Trailing content in the input row (the dialog shows an esc hint here). */
+  trailing?: ReactNode;
+  /**
+   * `dialog` is the bare panel that sits inside `Command`. `inline` is its own raised
+   * surface for placing on a page (a home-screen prompt); its list shows only when there
+   * are results.
+   */
+  variant?: "dialog" | "inline";
+  /** `lg` is a hero-sized input for a page's primary prompt. */
+  size?: "md" | "lg";
+  autoFocus?: boolean;
+  /** Called on Escape when there's nothing else for Escape to do. */
+  onEscape?: () => void;
+  /** Called on Enter when no item is active (e.g. submit the query as a question). */
+  onSubmit?: (query: string) => void;
+  inputRef?: Ref<HTMLInputElement>;
   children?: ReactNode;
   className?: string;
 }
@@ -26,10 +42,13 @@ export interface CommandProps {
 const ITEM = "[data-command-item]:not([data-disabled])";
 
 /**
- * Command palette: a dialog with a search input and a keyboard-navigable list.
- * ↑/↓ move, Enter selects, Esc closes. Pair with `useCommandShortcut` for ⌘K.
+ * A search input over a keyboard-navigable list: ↑/↓ move, Enter selects.
+ * `Command` puts it in a dialog; use it directly to put the same thing on a page.
  */
-export function Command({ open, onOpenChange, query, onQueryChange, placeholder = "Search…", loading, footer, children, className }: CommandProps) {
+export function CommandPanel({
+  query, onQueryChange, placeholder = "Search…", loading, footer, icon, trailing,
+  variant = "inline", size = "md", autoFocus, onEscape, onSubmit, inputRef, children, className,
+}: CommandPanelProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -45,11 +64,18 @@ export function Command({ open, onOpenChange, query, onQueryChange, placeholder 
   });
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    const n = items().length;
+    const all = items();
+    const n = all.length;
+    if (e.key === "Escape" && onEscape) { e.preventDefault(); onEscape(); return; }
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (all[active]) all[active].click();
+      else onSubmit?.(query);
+      return;
+    }
     if (!n) return;
     if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => (a + 1) % n); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => (a - 1 + n) % n); }
-    else if (e.key === "Enter" && !e.nativeEvent.isComposing) { e.preventDefault(); items()[active]?.click(); }
   };
 
   const onPointerMove = (e: PointerEvent) => {
@@ -60,35 +86,54 @@ export function Command({ open, onOpenChange, query, onQueryChange, placeholder 
   };
 
   return (
+    <div className={cx(styles.panel, className)} data-variant={variant} data-size={size}>
+      <div className={styles.search}>
+        {icon ?? <SearchIcon className={styles.searchIcon} width={size === "lg" ? 22 : 18} height={size === "lg" ? 22 : 18} />}
+        <input
+          ref={inputRef}
+          className={styles.input}
+          value={query}
+          onChange={(e) => onQueryChange(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+          aria-label={placeholder}
+          autoFocus={autoFocus}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          enterKeyHint="go"
+          role="combobox"
+          aria-expanded
+          aria-autocomplete="list"
+        />
+        {trailing}
+      </div>
+      <div className={styles.progress} data-loading={loading || undefined} aria-hidden />
+      <div ref={listRef} className={styles.list} role="listbox" onPointerMove={onPointerMove}>
+        {children}
+      </div>
+      {footer && <div className={styles.footer}>{footer}</div>}
+    </div>
+  );
+}
+
+export interface CommandProps extends Omit<CommandPanelProps, "variant" | "size" | "autoFocus" | "onEscape"> {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+/**
+ * Command palette: a dialog with a search input and a keyboard-navigable list.
+ * ↑/↓ move, Enter selects, Esc closes. Pair with `useCommandShortcut` for ⌘K.
+ */
+export function Command({ open, onOpenChange, placeholder = "Search…", className, ...panel }: CommandProps) {
+  return (
     <BaseDialog.Root open={open} onOpenChange={onOpenChange}>
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className={styles.backdrop} />
         <BaseDialog.Viewport className={styles.viewport}>
           <BaseDialog.Popup className={cx(styles.popup, className)} aria-label={placeholder}>
-            <div className={styles.search}>
-              <SearchIcon className={styles.searchIcon} width={18} height={18} />
-              <input
-                className={styles.input}
-                value={query}
-                onChange={(e) => onQueryChange(e.target.value)}
-                onKeyDown={onKeyDown}
-                placeholder={placeholder}
-                autoFocus
-                autoComplete="off"
-                autoCorrect="off"
-                spellCheck={false}
-                enterKeyHint="go"
-                role="combobox"
-                aria-expanded
-                aria-autocomplete="list"
-              />
-              <kbd className={styles.esc}>esc</kbd>
-            </div>
-            <div className={styles.progress} data-loading={loading || undefined} aria-hidden />
-            <div ref={listRef} className={styles.list} role="listbox" onPointerMove={onPointerMove}>
-              {children}
-            </div>
-            {footer && <div className={styles.footer}>{footer}</div>}
+            <CommandPanel {...panel} placeholder={placeholder} variant="dialog" autoFocus trailing={<kbd className={styles.esc}>esc</kbd>} />
           </BaseDialog.Popup>
         </BaseDialog.Viewport>
       </BaseDialog.Portal>

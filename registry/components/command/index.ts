@@ -1,1 +1,1 @@
-export { Command, CommandGroup, CommandItem, CommandEmpty, useCommandShortcut, type CommandProps, type CommandGroupProps, type CommandItemProps } from "./command";
+export { Command, CommandPanel, CommandGroup, CommandItem, CommandEmpty, useCommandShortcut, type CommandProps, type CommandPanelProps, type CommandGroupProps, type CommandItemProps } from "./command";
