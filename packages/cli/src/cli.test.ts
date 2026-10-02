@@ -81,3 +81,10 @@ test("copyComponent rewrites lib imports and hashes match", () => {
   assert.equal(copyComponent(reg, "button", root, "src/ui").written.length, 0);
   assert.equal(rewriteImports(`import { cx } from '../../lib/cx';`), `import { cx } from '../lib/cx';`);
 });
+
+test("unknown --notsho-* references are flagged", () => {
+  const f = lintSource(".a { padding: var(--notsho-space-14); gap: var(--notsho-space-4); }", { css: true });
+  assert.equal(f.length, 1);
+  assert.equal(f[0]!.rule, "unknown-token");
+  assert.equal(f[0]!.match, "--notsho-space-14");
+});

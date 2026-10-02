@@ -475,6 +475,60 @@
         "radius.xs",
         "motion.*"
       ]
+    },
+    "tree": {
+      "description": "Nested collapsible list: groups (label, count, trailing actions) that open to selectable items, one nesting level.",
+      "files": [
+        "components/tree/index.ts",
+        "components/tree/tree.tsx",
+        "components/tree/tree.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.border",
+        "color.surface-hover",
+        "color.accent",
+        "color.accent-subtle",
+        "color.text-muted",
+        "color.focus-ring",
+        "motion.*"
+      ]
+    },
+    "file-drop": {
+      "description": "Dashed drop zone for one file; click to pick instead. Highlights on drag-over.",
+      "files": [
+        "components/file-drop/index.ts",
+        "components/file-drop/file-drop.tsx",
+        "components/file-drop/file-drop.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.border-strong",
+        "color.accent",
+        "color.accent-subtle",
+        "color.text-muted",
+        "radius.control",
+        "motion.*"
+      ]
+    },
+    "color-field": {
+      "description": "Color swatch (system picker) beside an editable hex value; commits valid hex only.",
+      "files": [
+        "components/color-field/index.ts",
+        "components/color-field/color-field.tsx",
+        "components/color-field/color-field.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.border-strong",
+        "input.background",
+        "font.code",
+        "radius.control",
+        "color.focus-ring"
+      ]
     }
   }
 }

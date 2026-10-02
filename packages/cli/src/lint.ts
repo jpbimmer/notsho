@@ -1,3 +1,5 @@
+import { tokens } from "@notsho/tokens";
+
 /**
  * Token-drift lint. Finds hardcoded visual values that should be tokens.
  * Pure: takes source text, returns findings. Shared by `notsho doctor` and the MCP server.
@@ -6,7 +8,7 @@
 export interface Finding {
   line: number;
   column: number;
-  rule: "hardcoded-color" | "hardcoded-font-size" | "hardcoded-radius" | "hardcoded-shadow" | "hardcoded-font-family" | "hardcoded-duration";
+  rule: "hardcoded-color" | "hardcoded-font-size" | "hardcoded-radius" | "hardcoded-shadow" | "hardcoded-font-family" | "hardcoded-duration" | "unknown-token";
   match: string;
   message: string;
   suggestion?: string;
@@ -29,6 +31,10 @@ const RULES: Rule[] = [
 
 // Tailwind arbitrary values like bg-[#fff] are also hardcoded; the hex rule catches them.
 
+/** Every --notsho-* variable tokens.css defines. A var() naming anything else resolves to nothing, silently. */
+const KNOWN = new Set<string>(Object.values(tokens));
+const TOKEN_REF = /var\((--notsho-[\w-]+)/g;
+
 export interface LintOptions {
   /** Treat as CSS (also applies to .module.css). Inferred from filename when given. */
   css?: boolean;
@@ -45,6 +51,12 @@ export function lintSource(source: string, opts: LintOptions = {}): Finding[] {
     // Skip comment-only lines and import lines; colors in comments are documentation.
     const t = text.trim();
     if (t.startsWith("//") || t.startsWith("*") || t.startsWith("/*") || t.startsWith("import ")) return;
+    TOKEN_REF.lastIndex = 0;
+    let ref: RegExpExecArray | null;
+    while ((ref = TOKEN_REF.exec(text))) {
+      if (KNOWN.has(ref[1]!)) continue;
+      findings.push({ line: i + 1, column: ref.index + 5, rule: "unknown-token", match: ref[1]!, message: "No such token — the declaration is dropped.", suggestion: "Check the name with `notsho tokens`." });
+    }
     // Anything inside var(--…) fallbacks or oklch inside a token definition is allowed.
     const scrubbed = text.replace(/var\([^)]*\)/g, (m) => " ".repeat(m.length)).replace(/--[\w-]+\s*:[^;]*;/g, (m) => " ".repeat(m.length));
     for (const r of RULES) {

@@ -1,0 +1,22 @@
+.root { display: flex; align-items: center; gap: var(--notsho-space-2); }
+.root[data-disabled] { opacity: 0.5; }
+.swatch {
+  position: relative; flex: none;
+  width: var(--notsho-size-control); height: var(--notsho-size-control-sm);
+  border: var(--notsho-border-width) solid var(--notsho-color-border-strong);
+  border-radius: var(--notsho-radius-control);
+  overflow: hidden;
+}
+.swatch input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+.swatch:focus-within { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); outline-offset: 1px; }
+.hex {
+  flex: 1; min-width: 0;
+  height: var(--notsho-size-control-sm);
+  padding: 0 var(--notsho-space-2);
+  border: var(--notsho-border-width) solid var(--notsho-color-border-strong);
+  border-radius: var(--notsho-radius-control);
+  background: var(--notsho-input-background);
+  color: var(--notsho-color-text);
+  font-family: var(--notsho-font-code); font-size: var(--notsho-size-sm);
+}
+.hex:focus { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); outline-offset: -1px; }
