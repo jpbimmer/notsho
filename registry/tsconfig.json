@@ -1,5 +1,5 @@
 {
   "extends": "../tsconfig.base.json",
-  "compilerOptions": { "jsx": "react-jsx", "lib": ["ES2022", "DOM"], "noEmit": true, "types": ["./css-modules"] },
+  "compilerOptions": { "jsx": "react-jsx", "lib": ["ES2022", "DOM"], "noEmit": true, "types": ["./css-modules", "geojson"] },
   "include": ["components", "lib", "css-modules.d.ts"]
 }

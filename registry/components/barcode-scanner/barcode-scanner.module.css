@@ -1,0 +1,20 @@
+.scanner {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--notsho-radius-card);
+  background: var(--notsho-color-surface-sunken);
+}
+.scannerVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.scannerFrame {
+  position: absolute;
+  inset: 25% 12%;
+  border: var(--notsho-border-thick) solid var(--notsho-color-accent);
+  border-radius: var(--notsho-radius-control);
+  box-shadow: 0 0 0 100vmax var(--notsho-color-scrim); /* notsho-ignore — a mask around the frame, not elevation */
+}

@@ -1,0 +1,15 @@
+.center {
+  flex: 1;
+  justify-content: center;
+}
+
+.tableFrame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  transition: opacity var(--notsho-motion-duration-normal) var(--notsho-motion-easing-standard);
+}
+.tableFrame[data-loading] {
+  opacity: 0;
+}

@@ -1,0 +1,85 @@
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: var(--notsho-space-3);
+  flex-wrap: wrap;
+  padding: var(--notsho-space-3) var(--notsho-space-4);
+  border-bottom: var(--notsho-border-width) solid var(--notsho-color-border);
+}
+.filters {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--notsho-space-2);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.filterTrailing {
+  display: flex;
+  align-items: center;
+  gap: var(--notsho-space-3);
+  color: var(--notsho-color-text-muted);
+  font-size: var(--notsho-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+/* Hug the label instead of Select's 10rem default, so a row of filters fits on one line. */
+.filterBar .filterSelect {
+  width: max-content;
+  min-width: 0;
+  max-width: 14rem;
+}
+.filterBar .filterSelectActive {
+  border-color: var(--notsho-color-accent-border);
+  background: var(--notsho-color-accent-subtle);
+}
+.filterSearch {
+  position: relative;
+  display: inline-flex;
+  width: 12rem;
+}
+.filterSearch input {
+  width: 100%;
+  padding-left: calc(var(--notsho-space-2) + var(--notsho-space-5));
+}
+.filterSearchIcon {
+  position: absolute;
+  left: var(--notsho-space-2-5);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--notsho-color-text-muted);
+  pointer-events: none;
+}
+.optionRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--notsho-space-4);
+  width: 100%;
+}
+.optionCount {
+  color: var(--notsho-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 48rem) {
+  .filterBar {
+    padding: var(--notsho-space-2) var(--notsho-space-3);
+  }
+  /* Filters scroll sideways on phones; the count would sit on top of them. */
+  .filterTrailing {
+    display: none;
+  }
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(var(--notsho-space-3) * -1);
+    padding: 0 var(--notsho-space-3);
+  }
+  .filterSelect {
+    flex: none;
+  }
+  .filterSearch {
+    flex: none;
+    width: 9rem;
+  }
+}

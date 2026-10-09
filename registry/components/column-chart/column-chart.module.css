@@ -1,0 +1,27 @@
+.chart {
+  position: relative;
+  width: 100%;
+}
+.baseline {
+  stroke: var(--notsho-color-border);
+  stroke-width: 1;
+}
+.column {
+  fill: var(--notsho-color-accent);
+  transition: opacity var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
+}
+.column[data-dim] {
+  opacity: 0.35;
+}
+.axisLabel {
+  fill: var(--notsho-color-text-muted);
+  font-family: var(--notsho-font-body);
+  font-size: var(--notsho-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+.valueLabel {
+  fill: var(--notsho-color-text);
+  font-family: var(--notsho-font-body);
+  font-size: var(--notsho-size-xs);
+  font-weight: var(--notsho-weight-semibold);
+}

@@ -5,7 +5,11 @@
     "files": [
       "lib/cx.ts",
       "lib/icons.tsx",
-      "lib/portal.ts"
+      "lib/portal.ts",
+      "lib/element-width.ts",
+      "lib/media-query.ts",
+      "lib/motion-tokens.ts",
+      "lib/token-color.ts"
     ],
     "dependencies": [
       "clsx",
@@ -528,6 +532,183 @@
         "font.code",
         "radius.control",
         "color.focus-ring"
+      ]
+    },
+    "app-page": {
+      "description": "Default app page: icon, title, description, actions and a view switcher in the header, then the current view (fades in on switch). Fill mode for tables and maps.",
+      "files": [
+        "components/app-page/index.ts",
+        "components/app-page/app-page.tsx",
+        "components/app-page/app-page.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "segmented"
+      ],
+      "tokens": [
+        "color.accent",
+        "color.accent-subtle",
+        "color.text-muted",
+        "color.text-subtle",
+        "color.surface",
+        "color.border",
+        "radius.card",
+        "motion.*"
+      ]
+    },
+    "filter-bar": {
+      "description": "Row of filters above a view: FilterSelect (empty state reads as the filter name), FilterSearch, a Clear button, and trailing counts.",
+      "files": [
+        "components/filter-bar/index.ts",
+        "components/filter-bar/filter-bar.tsx",
+        "components/filter-bar/filter-bar.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "button",
+        "input",
+        "select"
+      ],
+      "tokens": [
+        "color.border",
+        "color.accent-border",
+        "color.accent-subtle",
+        "color.text-muted"
+      ]
+    },
+    "rank-list": {
+      "description": "Ranked rows with a thin magnitude bar behind each (top venues, top cities). Rows can be clickable.",
+      "files": [
+        "components/rank-list/index.ts",
+        "components/rank-list/rank-list.tsx",
+        "components/rank-list/rank-list.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.accent-subtle",
+        "color.surface-hover",
+        "color.text",
+        "color.text-muted",
+        "color.focus-ring",
+        "radius.control"
+      ]
+    },
+    "table-view": {
+      "description": "Full-height virtualized DataTable with loading, error and empty states. Rows select by id.",
+      "files": [
+        "components/table-view/index.ts",
+        "components/table-view/table-view.tsx",
+        "components/table-view/table-view.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "data-table",
+        "empty-state"
+      ],
+      "tokens": [
+        "motion.*"
+      ]
+    },
+    "chart-tooltip": {
+      "description": "Hover card for SVG charts, positioned inside the chart and flipping near the right edge.",
+      "files": [
+        "components/chart-tooltip/index.ts",
+        "components/chart-tooltip/chart-tooltip.tsx",
+        "components/chart-tooltip/chart-tooltip.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "tokens": [
+        "color.surface-overlay",
+        "color.border",
+        "color.text",
+        "color.text-muted",
+        "radius.control",
+        "shadow.floating"
+      ]
+    },
+    "column-chart": {
+      "description": "Single-series column chart (visx): one hue, rounded tops, hairline baseline, peak labeled, the rest on hover.",
+      "files": [
+        "components/column-chart/index.ts",
+        "components/column-chart/column-chart.tsx",
+        "components/column-chart/column-chart.module.css"
+      ],
+      "dependencies": [
+        "@visx/responsive",
+        "@visx/scale"
+      ],
+      "registryDependencies": [
+        "chart-tooltip"
+      ],
+      "tokens": [
+        "color.accent",
+        "color.border",
+        "color.text",
+        "color.text-muted",
+        "motion.*"
+      ]
+    },
+    "calendar-heatmap": {
+      "description": "One year of days as a GitHub-style grid with a sequential accent ramp, legend and hover tooltips.",
+      "files": [
+        "components/calendar-heatmap/index.ts",
+        "components/calendar-heatmap/calendar-heatmap.tsx",
+        "components/calendar-heatmap/calendar-heatmap.module.css"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "chart-tooltip"
+      ],
+      "tokens": [
+        "color.accent",
+        "color.surface-sunken",
+        "color.border",
+        "color.text",
+        "color.text-muted"
+      ]
+    },
+    "map-panel": {
+      "description": "Clustered pins on an OpenFreeMap basemap (MapLibre, no API key). Token colors, light/dark basemap, selection sync. Vite only (worker URL).",
+      "files": [
+        "components/map-panel/index.ts",
+        "components/map-panel/map-panel.tsx",
+        "components/map-panel/map-panel.module.css"
+      ],
+      "dependencies": [
+        "maplibre-gl"
+      ],
+      "registryDependencies": [],
+      "tokens": [
+        "color.accent",
+        "color.surface",
+        "color.on-accent",
+        "color.text",
+        "color.surface-overlay",
+        "shadow.*",
+        "motion.*"
+      ]
+    },
+    "barcode-scanner": {
+      "description": "Camera barcode scanner: native BarcodeDetector or a bundled ZXing WASM fallback, never a CDN. Vite only (?url).",
+      "files": [
+        "components/barcode-scanner/index.ts",
+        "components/barcode-scanner/barcode-scanner.tsx",
+        "components/barcode-scanner/barcode-scanner.module.css"
+      ],
+      "dependencies": [
+        "barcode-detector",
+        "zxing-wasm"
+      ],
+      "registryDependencies": [
+        "empty-state"
+      ],
+      "tokens": [
+        "color.accent",
+        "color.scrim",
+        "color.surface-sunken",
+        "radius.card"
       ]
     }
   }

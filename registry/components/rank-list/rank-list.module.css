@@ -1,0 +1,61 @@
+.rankList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--notsho-space-1);
+}
+.rankRow {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--notsho-space-3);
+  width: 100%;
+  min-height: var(--notsho-size-control);
+  padding: 0 var(--notsho-space-2);
+  border: 0;
+  border-radius: var(--notsho-radius-control);
+  background: transparent;
+  color: var(--notsho-color-text);
+  font: inherit;
+  font-size: var(--notsho-size-sm);
+  text-align: left;
+}
+button.rankRow {
+  cursor: pointer;
+}
+button.rankRow:hover {
+  background: var(--notsho-color-surface-hover);
+}
+button.rankRow:focus-visible {
+  outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring);
+}
+.rankBar {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: var(--notsho-space-1);
+  bottom: var(--notsho-space-1);
+  min-width: var(--notsho-space-1);
+  border-radius: var(--notsho-radius-xs);
+  background: var(--notsho-color-accent-subtle);
+}
+.rankLabel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rankValue {
+  flex: none;
+  color: var(--notsho-color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.rankEmpty {
+  padding: var(--notsho-space-4) var(--notsho-space-2);
+  color: var(--notsho-color-text-muted);
+  font-size: var(--notsho-size-sm);
+}

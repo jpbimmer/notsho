@@ -1,0 +1,22 @@
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--notsho-space-0-5);
+  padding: var(--notsho-space-2) var(--notsho-space-3);
+  background: var(--notsho-color-surface-overlay);
+  color: var(--notsho-color-text);
+  border: var(--notsho-border-width) solid var(--notsho-color-border);
+  border-radius: var(--notsho-radius-control);
+  box-shadow: var(--notsho-shadow-floating);
+  font-size: var(--notsho-size-xs);
+  white-space: nowrap;
+}
+.tooltip strong {
+  font-weight: var(--notsho-weight-semibold);
+}
+.tooltip span {
+  color: var(--notsho-color-text-muted);
+}

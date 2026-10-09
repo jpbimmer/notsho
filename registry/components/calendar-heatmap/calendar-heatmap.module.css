@@ -1,0 +1,77 @@
+.axisLabel {
+  fill: var(--notsho-color-text-muted);
+  font-family: var(--notsho-font-body);
+  font-size: var(--notsho-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.heatmapFrame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--notsho-space-2);
+}
+.heatmapScroll {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Sequential ramp: one hue (the accent), mixed toward the sunken surface. */
+.cell {
+  fill: var(--notsho-color-surface-sunken);
+  stroke: var(--notsho-color-border);
+  stroke-width: 1;
+}
+.cell[data-level="1"] {
+  fill: color-mix(in oklch, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
+  stroke: none;
+}
+.cell[data-level="2"] {
+  fill: color-mix(in oklch, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
+  stroke: none;
+}
+.cell[data-level="3"] {
+  fill: color-mix(in oklch, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
+  stroke: none;
+}
+.cell[data-level="4"] {
+  fill: var(--notsho-color-accent);
+  stroke: none;
+}
+rect.cell:hover {
+  stroke: var(--notsho-color-text);
+  stroke-width: 1.5;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--notsho-space-1);
+  color: var(--notsho-color-text-muted);
+  font-size: var(--notsho-size-xs);
+}
+.legend .cell {
+  display: inline-block;
+  width: var(--notsho-space-3);
+  height: var(--notsho-space-3);
+  border-radius: var(--notsho-radius-xs);
+  border: var(--notsho-border-width) solid var(--notsho-color-border);
+  background: var(--notsho-color-surface-sunken);
+}
+.legend .cell[data-level="1"] {
+  background: color-mix(in oklch, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
+  border-color: transparent;
+}
+.legend .cell[data-level="2"] {
+  background: color-mix(in oklch, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
+  border-color: transparent;
+}
+.legend .cell[data-level="3"] {
+  background: color-mix(in oklch, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
+  border-color: transparent;
+}
+.legend .cell[data-level="4"] {
+  background: var(--notsho-color-accent);
+  border-color: transparent;
+}
