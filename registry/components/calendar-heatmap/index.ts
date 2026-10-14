@@ -1,1 +1,1 @@
-export { CalendarHeatmap } from "./calendar-heatmap";
+export { CalendarHeatmap, type Thresholds } from "./calendar-heatmap";

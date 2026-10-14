@@ -7,15 +7,20 @@ const DAY = 86_400_000;
 const fmtDay = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const fmtMonth = new Intl.DateTimeFormat(undefined, { month: "short", timeZone: "UTC" });
 
+/** Where levels 1–4 start. The default suits small counts (check-ins): 1, 2, 3–4, 5+. */
+const COUNTS: Thresholds = [1, 2, 3, 5];
+export type Thresholds = [number, number, number, number];
+
 /** Sequential, one hue: 0 is the empty well, 1–4 step up in accent. */
-function level(n: number) {
-  if (n <= 0) return 0;
-  if (n === 1) return 1;
-  if (n === 2) return 2;
-  if (n <= 4) return 3;
+function level(n: number, t: Thresholds) {
+  if (n <= 0 || n < t[0]) return 0;
+  if (n < t[1]) return 1;
+  if (n < t[2]) return 2;
+  if (n < t[3]) return 3;
   return 4;
 }
-const LEVEL_LABEL = ["None", "1", "2", "3–4", "5+"];
+const levelLabel = (t: Thresholds, l: number) =>
+  l === 0 ? "None" : l === 4 ? `${t[3].toLocaleString()}+` : t[l]! - t[l - 1]! <= 1 ? t[l - 1]!.toLocaleString() : `${t[l - 1]!.toLocaleString()}–${(t[l]! - 1).toLocaleString()}`;
 
 /**
  * One year of days, weeks as columns (Sunday on top). Cells scale with the
@@ -26,21 +31,26 @@ export function CalendarHeatmap({
   counts,
   onSelect,
   unit = ["item", "items"],
+  thresholds = COUNTS,
 }: {
   year: number;
   counts: Map<string, number>;
   onSelect?: (date: string) => void;
   /** Singular and plural, for the tooltip. */
   unit?: [string, string];
+  /** Where levels 1–4 start, ascending — e.g. [1, 30, 90, 180] for minutes a day. */
+  thresholds?: Thresholds;
 }) {
   const [ref, width] = useElementWidth<HTMLDivElement>();
   return (
     <div className={styles.heatmapFrame}>
-      <div ref={ref}>{width > 0 && <Inner year={year} counts={counts} width={width} onSelect={onSelect} unit={unit} />}</div>
+      <div ref={ref}>
+        {width > 0 && <Inner year={year} counts={counts} width={width} onSelect={onSelect} unit={unit} thresholds={thresholds} />}
+      </div>
       <div className={styles.legend} aria-hidden>
         <span>Less</span>
         {[0, 1, 2, 3, 4].map((l) => (
-          <span key={l} className={styles.cell} data-level={l} title={LEVEL_LABEL[l]} />
+          <span key={l} className={styles.cell} data-level={l} title={levelLabel(thresholds, l)} />
         ))}
         <span>More</span>
       </div>
@@ -54,12 +64,14 @@ function Inner({
   width,
   onSelect,
   unit,
+  thresholds,
 }: {
   year: number;
   counts: Map<string, number>;
   width: number;
   onSelect?: (date: string) => void;
   unit: [string, string];
+  thresholds: Thresholds;
 }) {
   const [tip, setTip] = useState<TipState | null>(null);
   const LEFT = 28;
@@ -116,7 +128,7 @@ function Inner({
             height={cell}
             rx={Math.min(3, cell / 4)}
             className={styles.cell}
-            data-level={level(d.n)}
+            data-level={level(d.n, thresholds)}
             style={{ cursor: onSelect && d.n ? "pointer" : undefined }}
             onMouseEnter={() =>
               setTip({

@@ -16,22 +16,22 @@
   overflow-y: hidden;
 }
 
-/* Sequential ramp: one hue (the accent), mixed toward the sunken surface. */
+/* Sequential ramp: one hue (the accent), mixed toward the sunken surface (in oklab, so the hue never drifts toward the surface's). */
 .cell {
   fill: var(--notsho-color-surface-sunken);
   stroke: var(--notsho-color-border);
   stroke-width: 1;
 }
 .cell[data-level="1"] {
-  fill: color-mix(in oklch, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
+  fill: color-mix(in oklab, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
   stroke: none;
 }
 .cell[data-level="2"] {
-  fill: color-mix(in oklch, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
+  fill: color-mix(in oklab, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
   stroke: none;
 }
 .cell[data-level="3"] {
-  fill: color-mix(in oklch, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
+  fill: color-mix(in oklab, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
   stroke: none;
 }
 .cell[data-level="4"] {
@@ -60,15 +60,15 @@ rect.cell:hover {
   background: var(--notsho-color-surface-sunken);
 }
 .legend .cell[data-level="1"] {
-  background: color-mix(in oklch, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
+  background: color-mix(in oklab, var(--notsho-color-accent) 38%, var(--notsho-color-surface-sunken));
   border-color: transparent;
 }
 .legend .cell[data-level="2"] {
-  background: color-mix(in oklch, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
+  background: color-mix(in oklab, var(--notsho-color-accent) 60%, var(--notsho-color-surface-sunken));
   border-color: transparent;
 }
 .legend .cell[data-level="3"] {
-  background: color-mix(in oklch, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
+  background: color-mix(in oklab, var(--notsho-color-accent) 78%, var(--notsho-color-surface-sunken));
   border-color: transparent;
 }
 .legend .cell[data-level="4"] {
