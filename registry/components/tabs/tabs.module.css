@@ -22,7 +22,7 @@
   transition: color var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard), background var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
 }
 .tab:hover { color: var(--notsho-color-text); }
-.tab[data-selected] { color: var(--notsho-color-text); }
+.tab[aria-selected="true"] { color: var(--notsho-color-text); }
 .tab:focus-visible { outline: var(--notsho-border-focus-width) solid var(--notsho-color-focus-ring); outline-offset: -2px; }
 .tab[data-disabled] { opacity: 0.5; cursor: not-allowed; }
 .list[data-variant="underline"] .tab { border-radius: var(--notsho-radius-control) var(--notsho-radius-control) 0 0; }
@@ -40,6 +40,13 @@
   top: var(--active-tab-top); height: var(--active-tab-height);
   background: var(--notsho-color-surface-raised); border-radius: calc(var(--notsho-radius-control) - var(--notsho-space-0-5));
   box-shadow: var(--notsho-shadow-raised);
+}
+/* tone="accent": the selected segment is tinted with the accent and labelled in it (app view switchers). */
+.list[data-tone="accent"] .indicator { background: oklch(from var(--notsho-color-accent) l c h / 0.14); box-shadow: none; }
+.list[data-tone="accent"] .tab[aria-selected="true"],
+.list[data-tone="accent"] .tab[aria-selected="true"]:hover {
+  /* Pulled 30% toward the text color (darker in light, lighter in dark) so it clears AA on the tint with any accent. */
+  color: color-mix(in oklch, var(--notsho-color-accent) 70%, var(--notsho-color-text));
 }
 
 .panel { outline: 0; }

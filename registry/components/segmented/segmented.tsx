@@ -20,6 +20,8 @@ export interface SegmentedProps<T extends string = string> {
   fullWidth?: boolean;
   /** Hide labels and show icons only (labels become aria-labels when they are strings). */
   iconOnly?: boolean;
+  /** "accent" fills the selected segment with the accent color (app view switchers). */
+  tone?: "neutral" | "accent";
   "aria-label"?: string;
   className?: string;
 }
@@ -29,7 +31,7 @@ export interface SegmentedProps<T extends string = string> {
  * Built on Tabs' segmented variant so the two always look identical.
  */
 export function Segmented<T extends string = string>({
-  options, value, defaultValue, onValueChange, fullWidth, iconOnly, className, "aria-label": ariaLabel,
+  options, value, defaultValue, onValueChange, fullWidth, iconOnly, tone, className, "aria-label": ariaLabel,
 }: SegmentedProps<T>) {
   return (
     <Tabs
@@ -39,7 +41,7 @@ export function Segmented<T extends string = string>({
       data-full-width={fullWidth || undefined}
       className={cx(styles.root, className)}
     >
-      <TabsList variant="segmented" aria-label={ariaLabel} className={styles.list}>
+      <TabsList variant="segmented" data-tone={tone === "accent" ? tone : undefined} aria-label={ariaLabel} className={styles.list}>
         {options.map((o) => (
           <Tab
             key={o.value}

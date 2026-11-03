@@ -62,6 +62,7 @@ export function AppPage({
         {views.length > 1 && view && (
           <Segmented
             aria-label="View"
+            tone="accent"
             className={styles.switcher}
             value={view}
             fullWidth={phone}
