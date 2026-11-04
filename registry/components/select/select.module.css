@@ -26,6 +26,7 @@
 .positioner { outline: 0; z-index: 72; }
 .popup {
   box-sizing: border-box;
+  display: flex; flex-direction: column;
   min-width: var(--anchor-width);
   max-height: var(--available-height);
   padding: var(--notsho-space-1);
@@ -38,7 +39,12 @@
   transition: opacity var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard), transform var(--notsho-motion-duration-fast) var(--notsho-motion-easing-standard);
 }
 .popup[data-starting-style], .popup[data-ending-style] { opacity: 0; transform: scale(0.96); }
-.list { overflow-y: auto; }
+.list { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+/* Touch: finger-sized rows, and the list never runs past the screen edge. */
+@media (pointer: coarse) {
+  .popup { max-height: min(var(--available-height), 60dvh); }
+  .item { min-height: var(--notsho-size-control); font-size: var(--notsho-size-md); }
+}
 
 .item {
   display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--notsho-space-2);

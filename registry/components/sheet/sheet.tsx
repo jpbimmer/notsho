@@ -1,6 +1,6 @@
 "use client";
 import { Drawer } from "@base-ui/react/drawer";
-import { createContext, useContext, type ComponentPropsWithoutRef } from "react";
+import { createContext, useCallback, useContext, useRef, type ComponentPropsWithoutRef } from "react";
 import { cx } from "../../lib/cx";
 import { usePortalContainer } from "../../lib/portal";
 import { XIcon } from "../../lib/icons";
@@ -36,10 +36,11 @@ export interface SheetContentProps extends ComponentPropsWithoutRef<typeof Drawe
 /** Portal + backdrop + sliding panel. Put SheetHeader / SheetBody / SheetFooter inside. */
 export function SheetContent({ size = "md", hideClose, className, children, ...rest }: SheetContentProps) {
   const side = useContext(SideContext);
+  const viewport = useKeyboardAwareViewport();
   return (
     <Drawer.Portal container={usePortalContainer()}>
       <Drawer.Backdrop className={styles.backdrop} />
-      <Drawer.Viewport data-side={side} className={styles.viewport}>
+      <Drawer.Viewport ref={viewport} data-side={side} className={styles.viewport}>
         <Drawer.Popup data-side={side} data-size={size} className={cx(styles.popup, className)} {...rest}>
           {side === "bottom" && <div className={styles.handle} aria-hidden />}
           {children}
@@ -70,3 +71,28 @@ export function SheetFooter({ className, ...rest }: ComponentPropsWithoutRef<"di
 }
 /** Closes the sheet. Use `render={<Button variant="ghost" />}` to style it as a Button. */
 export const SheetClose = Drawer.Close;
+
+/**
+ * Pins the sheet's viewport to the *visual* viewport, so an on-screen keyboard
+ * shrinks the sheet (its body scrolls) instead of covering it or shoving the page.
+ */
+function useKeyboardAwareViewport() {
+  const cleanup = useRef<(() => void) | null>(null);
+  return useCallback((el: HTMLDivElement | null) => {
+    cleanup.current?.();
+    cleanup.current = null;
+    const vv = window.visualViewport;
+    if (!el || !vv) return;
+    const sync = () => {
+      el.style.setProperty("--sheet-vv-top", `${vv.offsetTop}px`);
+      el.style.setProperty("--sheet-vv-height", `${vv.height}px`);
+    };
+    sync();
+    vv.addEventListener("resize", sync);
+    vv.addEventListener("scroll", sync);
+    cleanup.current = () => {
+      vv.removeEventListener("resize", sync);
+      vv.removeEventListener("scroll", sync);
+    };
+  }, []);
+}

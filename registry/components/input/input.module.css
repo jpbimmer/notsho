@@ -34,3 +34,8 @@
   box-shadow: 0 0 0 calc(var(--notsho-border-focus-width) - var(--notsho-border-width)) var(--notsho-color-danger);
 }
 .input[data-disabled] { opacity: 0.5; cursor: not-allowed; background: var(--notsho-color-surface-sunken); }
+
+/* iOS zooms the page into any field under 16px on focus. Touch screens get body-size text. */
+@media (pointer: coarse) {
+  .input { font-size: max(var(--_fs), var(--notsho-size-md)); }
+}

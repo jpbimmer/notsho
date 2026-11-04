@@ -9,6 +9,9 @@
 
 .viewport {
   position: fixed; inset: 0; z-index: 61;
+  top: var(--sheet-vv-top, 0);
+  bottom: auto;
+  height: var(--sheet-vv-height, 100dvh);
   display: flex;
 }
 .viewport[data-side="right"] { justify-content: flex-end; }
@@ -51,7 +54,7 @@
 
 .popup[data-side="bottom"] {
   width: 100%;
-  max-height: 92dvh;
+  max-height: 92%;
   border-top-width: var(--notsho-border-width);
   border-radius: var(--notsho-radius-overlay) var(--notsho-radius-overlay) 0 0;
   padding-bottom: env(safe-area-inset-bottom);
