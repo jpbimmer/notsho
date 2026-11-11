@@ -12,7 +12,7 @@ const SideContext = createContext<SheetSide>("right");
 const swipe = { right: "right", left: "left", bottom: "down" } as const;
 
 export interface SheetProps extends Omit<ComponentPropsWithoutRef<typeof Drawer.Root>, "swipeDirection"> {
-  /** Edge the sheet slides in from. Swipe toward that edge to dismiss. Default "right". */
+  /** Edge the sheet slides in from. Default "right". Close with the corner button, the backdrop, or Escape — no swipe-to-dismiss (it fought scrolling on phones). */
   side?: SheetSide;
 }
 
@@ -40,9 +40,9 @@ export function SheetContent({ size = "md", hideClose, className, children, ...r
   return (
     <Drawer.Portal container={usePortalContainer()}>
       <Drawer.Backdrop className={styles.backdrop} />
-      <Drawer.Viewport ref={viewport} data-side={side} className={styles.viewport}>
+      {/* data-base-ui-swipe-ignore turns off Base UI's drag-to-close for everything inside. */}
+      <Drawer.Viewport ref={viewport} data-side={side} data-base-ui-swipe-ignore="" className={styles.viewport}>
         <Drawer.Popup data-side={side} data-size={size} className={cx(styles.popup, className)} {...rest}>
-          {side === "bottom" && <div className={styles.handle} aria-hidden />}
           {children}
           {!hideClose && (
             <Drawer.Close className={styles.close} aria-label="Close"><XIcon /></Drawer.Close>
