@@ -8,20 +8,25 @@ import styles from "./sheet.module.css";
 
 export type SheetSide = "right" | "left" | "bottom";
 
-const SideContext = createContext<SheetSide>("right");
+const SheetContext = createContext<{ side: SheetSide; swipe: boolean }>({ side: "right", swipe: false });
 const swipe = { right: "right", left: "left", bottom: "down" } as const;
 
 export interface SheetProps extends Omit<ComponentPropsWithoutRef<typeof Drawer.Root>, "swipeDirection"> {
-  /** Edge the sheet slides in from. Default "right". Close with the corner button, the backdrop, or Escape — no swipe-to-dismiss (it fought scrolling on phones). */
+  /** Edge the sheet slides in from. Default "right". */
   side?: SheetSide;
+  /**
+   * Swipe toward the edge to dismiss (bottom sheets also show a drag handle). Default false: close with the
+   * corner button, the backdrop, or Escape — swiping tends to fight scrolling on phones.
+   */
+  swipe?: boolean;
 }
 
 /** Root: controls open state. Compose: <Sheet><SheetTrigger/><SheetContent>…</SheetContent></Sheet> */
-export function Sheet({ side = "right", ...rest }: SheetProps) {
+export function Sheet({ side = "right", swipe: canSwipe = false, ...rest }: SheetProps) {
   return (
-    <SideContext.Provider value={side}>
+    <SheetContext.Provider value={{ side, swipe: canSwipe }}>
       <Drawer.Root swipeDirection={swipe[side]} {...rest} />
-    </SideContext.Provider>
+    </SheetContext.Provider>
   );
 }
 export const SheetTrigger = Drawer.Trigger;
@@ -35,14 +40,20 @@ export interface SheetContentProps extends ComponentPropsWithoutRef<typeof Drawe
 
 /** Portal + backdrop + sliding panel. Put SheetHeader / SheetBody / SheetFooter inside. */
 export function SheetContent({ size = "md", hideClose, className, children, ...rest }: SheetContentProps) {
-  const side = useContext(SideContext);
+  const { side, swipe: canSwipe } = useContext(SheetContext);
   const viewport = useKeyboardAwareViewport();
   return (
     <Drawer.Portal container={usePortalContainer()}>
       <Drawer.Backdrop className={styles.backdrop} />
-      {/* data-base-ui-swipe-ignore turns off Base UI's drag-to-close for everything inside. */}
-      <Drawer.Viewport ref={viewport} data-side={side} data-base-ui-swipe-ignore="" className={styles.viewport}>
+      {/* Base UI has no swipe off switch; data-base-ui-swipe-ignore turns off drag-to-close for everything inside. */}
+      <Drawer.Viewport
+        ref={viewport}
+        data-side={side}
+        data-base-ui-swipe-ignore={canSwipe ? undefined : ""}
+        className={styles.viewport}
+      >
         <Drawer.Popup data-side={side} data-size={size} className={cx(styles.popup, className)} {...rest}>
+          {canSwipe && side === "bottom" && <div className={styles.handle} aria-hidden />}
           {children}
           {!hideClose && (
             <Drawer.Close className={styles.close} aria-label="Close"><XIcon /></Drawer.Close>

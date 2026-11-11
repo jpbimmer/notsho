@@ -298,7 +298,7 @@
       ]
     },
     "sheet": {
-      "description": "Edge-anchored panel (right, left, or bottom) with swipe-to-dismiss. Header/body/footer parts; body scrolls.",
+      "description": "Edge-anchored panel (right, left, or bottom) with optional swipe-to-dismiss. Header/body/footer parts; body scrolls.",
       "files": [
         "components/sheet/index.ts",
         "components/sheet/sheet.tsx",
